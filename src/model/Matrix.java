@@ -18,32 +18,32 @@ public class Matrix {
 		data = new double[row][col];
 	}
 
-	public static Matrix transpose(Matrix matrix){
-		Matrix transposedMatrix = new Matrix(matrix.getRows(), matrix.getCols());
-		for(int i=0; i<matrix.getRows(); i++){
-			for(int j=0; j<matrix.getCols(); j++){
-				//swap rows and columns
-			}
-		}
-		return transposedMatrix;
-	}
+//	public static Matrix transpose(Matrix matrix){
+//		Matrix transposedMatrix = new Matrix(matrix.getRows(), matrix.getCols());
+//		for(int i=0; i<matrix.getRows(); i++){
+//			for(int j=0; j<matrix.getCols(); j++){
+//				//swap rows and columns
+//			}
+//		}
+//		return transposedMatrix;
+//	}
 	
-	public static Matrix cofactor(Matrix matrix){
-		Matrix mat = new Matrix(matrix.getRows(), matrix.getCols());
-		for(int i=0; i<matrix.getRows(); i++){
-			for(int j=0; j<matrix.getCols(); j++){
-				//	
-			}
-		}
-	}
-
-	// throws NoSquareException
-	public static Matrix inverse(Matrix matrix){
-		return (transpose(cofactor(matrix)).multiplyByConstant(1.0/determinant(matrix)));
-	}
-	public int getRows() {
-		return rows;
-	}
+//	public static Matrix cofactor(Matrix matrix){
+//		Matrix mat = new Matrix(matrix.getRows(), matrix.getCols());
+//		for(int i=0; i<matrix.getRows(); i++){
+//			for(int j=0; j<matrix.getCols(); j++){
+//				//	
+//			}
+//		}
+//	}
+//
+//	// throws NoSquareException
+//	public static Matrix inverse(Matrix matrix){
+//		return (transpose(cofactor(matrix)).multiplyByConstant(1.0/determinant(matrix)));
+//	}
+//	public int getRows() {
+//		return rows;
+//	}
 
 	public void setRows(int rows) {
 		this.rows = rows;
