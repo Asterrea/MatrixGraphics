@@ -12,7 +12,7 @@ import model.Plot2D;
 public class GraphPanel extends JPanel {
    // Name-constants
    public static final int CANVAS_WIDTH = 1280;
-   public static final int CANVAS_HEIGHT = 720;
+   public static final int CANVAS_HEIGHT = 680;
    public static final String TITLE = "Matrix Graphics";
    // ......
  
