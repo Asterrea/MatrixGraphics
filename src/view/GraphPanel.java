@@ -1,10 +1,11 @@
 package view;
 
 import java.awt.*;
-import java.awt.geom.*;
-import java.util.jar.JarInputStream;
+
 
 import javax.swing.*;
+
+import model.Plot2D;
  
 // Swing Program Template
 @SuppressWarnings("serial")
@@ -28,7 +29,6 @@ public class GraphPanel extends JPanel {
  
       // Allocate the UI components
       // .....
-      JTextField obj_input;
  
       // "this" JPanel adds components
       // add(....)
@@ -48,11 +48,11 @@ public class GraphPanel extends JPanel {
       Graphics2D g2 = (Graphics2D)g;
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       
-   // Draw lines.
+//    Draw lines.
 //      double xInc = (double)(w - 2*PAD)/(data.length-1);
 //      double scale = (double)(h - 2*PAD)/getMax();
 //      
-      //Mark data points
+//      Mark data points
 //      g2.setPaint(Color.RED);
 //      for(int i = 0 ; i < data.length ; i++){
 //    	  double x = PAD + i*xInc;
@@ -67,9 +67,19 @@ public class GraphPanel extends JPanel {
       // Run GUI codes in the Event-Dispatching thread for thread safety
       SwingUtilities.invokeLater(new Runnable() {
          public void run() {
+        	Plot2D test = new Plot2D();
+        	Plot2D test2 = new Plot2D();
+        	
             JFrame frame = new JFrame(TITLE);
             frame.setContentPane(new GraphPanel());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            frame.add(test.getContent());
+            frame.add(test.getUIPanel(), "Last");
+            
+            frame.add(test2.getContent());
+            frame.add(test2.getUIPanel(), "Last");
+            
             frame.pack();             // "this" JFrame packs its components
             frame.setLocationRelativeTo(null); // center the application window
             frame.setVisible(true);            // show it
