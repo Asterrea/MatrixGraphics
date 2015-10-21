@@ -5,11 +5,11 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import model.Plot2D;
+import model.Plot2D_test;
  
 // Swing Program Template
 @SuppressWarnings("serial")
-public class GraphPanel extends JPanel {
+public class MainFrame extends JPanel {
    // Name-constants
    public static final int CANVAS_WIDTH = 1280;
    public static final int CANVAS_HEIGHT = 680;
@@ -22,7 +22,7 @@ public class GraphPanel extends JPanel {
    int[] input_data;
    
    /** Constructor to setup the GUI components */
-   public GraphPanel() {
+   public MainFrame() {
       setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
       // "this" JPanel container sets layout
       // setLayout(new ....Layout());
@@ -67,18 +67,15 @@ public class GraphPanel extends JPanel {
       // Run GUI codes in the Event-Dispatching thread for thread safety
       SwingUtilities.invokeLater(new Runnable() {
          public void run() {
-        	Plot2D test = new Plot2D();
-        	Plot2D test2 = new Plot2D();
+        	Plot2D_test test = new Plot2D_test();
+        	Plot2D_test test2 = new Plot2D_test();
         	
             JFrame frame = new JFrame(TITLE);
-            frame.setContentPane(new GraphPanel());
+            frame.setContentPane(new MainFrame());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
             frame.add(test.getContent());
-            frame.add(test.getUIPanel(), "Last");
-            
             frame.add(test2.getContent());
-            frame.add(test2.getUIPanel(), "Last");
             
             frame.pack();             // "this" JFrame packs its components
             frame.setLocationRelativeTo(null); // center the application window

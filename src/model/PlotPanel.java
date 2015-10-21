@@ -87,7 +87,7 @@ class PlotPanel extends JPanel {
             g2.fill(new Ellipse2D.Double(x1-2, y1-2, 4, 4));
             g2.drawString(String.valueOf(i), (float)x1+3, (float)y1-3);
         }
- 
+        
         // Draw extreme data values.
         g2.setPaint(Color.black);
         Font font = g2.getFont();
