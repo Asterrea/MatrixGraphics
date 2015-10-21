@@ -1,10 +1,17 @@
 package view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.RenderingHints;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-import javax.swing.*;
-
+import model.GraphInput;
 import model.Plot2D;
  
 // Swing Program Template
@@ -26,7 +33,7 @@ public class GraphPanel extends JPanel {
       setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
       // "this" JPanel container sets layout
       // setLayout(new ....Layout());
- 
+      
       // Allocate the UI components
       // .....
  
@@ -43,46 +50,36 @@ public class GraphPanel extends JPanel {
 	   
 	   // paint background
       super.paintComponent(g);  
-      setBackground(Color.BLACK);
 
       Graphics2D g2 = (Graphics2D)g;
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      
-//    Draw lines.
-//      double xInc = (double)(w - 2*PAD)/(data.length-1);
-//      double scale = (double)(h - 2*PAD)/getMax();
-//      
-//      Mark data points
-//      g2.setPaint(Color.RED);
-//      for(int i = 0 ; i < data.length ; i++){
-//    	  double x = PAD + i*xInc;
-//    	  double y = h-PAD - scale*data[i];
-//    	  g2.fill(new Ellipse2D.Double(x-2,y-2,4,4));
-//      }
       
    }
  
    /** The entry main() method */
    public static void main(String[] args) {
-      // Run GUI codes in the Event-Dispatching thread for thread safety
-      SwingUtilities.invokeLater(new Runnable() {
+          SwingUtilities.invokeLater(new Runnable() {
          public void run() {
-        	Plot2D test = new Plot2D();
-        	Plot2D test2 = new Plot2D();
+        	
+        	Plot2D before = new Plot2D();
+        	Plot2D after = new Plot2D();
+        	GraphInput input = new GraphInput();
         	
             JFrame frame = new JFrame(TITLE);
             frame.setContentPane(new GraphPanel());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
-            frame.add(test.getContent());
-            frame.add(test.getUIPanel(), "Last");
+            frame.add(input);
             
-            frame.add(test2.getContent());
-            frame.add(test2.getUIPanel(), "Last");
+            frame.add(before.getContent());
+//            frame.add(before.getUIPanel());
             
-            frame.pack();             // "this" JFrame packs its components
-            frame.setLocationRelativeTo(null); // center the application window
-            frame.setVisible(true);            // show it
+            frame.add(after.getContent());
+//            frame.add(after.getUIPanel());
+            
+            frame.pack();             			// "this" JFrame packs its components
+            frame.setLocationRelativeTo(null);  // center the application window
+            frame.setVisible(true);             // show it
          }
       });
    }
