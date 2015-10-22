@@ -88,6 +88,11 @@ class PlotPanel extends JPanel {
             g2.drawString(String.valueOf(i), (float)x1+3, (float)y1-3);
         }
         
+        // Draw Line
+        if(true){
+        	drawLine(g2, offset, w, h);
+        }
+        
         // Draw extreme data values.
         g2.setPaint(Color.black);
         Font font = g2.getFont();
@@ -113,7 +118,21 @@ class PlotPanel extends JPanel {
             System.out.println("------------------------------");
         firstTime = false;
     }
- 
+    
+    public void drawLine(Graphics2D g2, Point2D.Double offset, int w, int h){
+    	// Draw lines
+        double xInc = (double)(w - 2*PAD)/(xMax-xMin);
+        double scale = (double)(h - 2*PAD)/(yMax-yMin);
+        g2.setPaint(Color.GREEN.darker());
+        for(int i = 0; i < y.length - 1; i++){
+        	double x1 = offset.x + x[i]*xInc;
+        	double y1 = offset.y - scale * y[i];
+        	double x2 = offset.x + x[i+1]*xInc;
+        	double y2 = offset.y - scale * y[i+1];
+        	g2.draw(new Line2D.Double(x1,y1,x2,y2));
+        }
+    }
+    
     public void setData(double[] x, double[] y) {
         if(x.length != y.length) {
             throw new IllegalArgumentException("x and y data arrays " +
