@@ -23,6 +23,7 @@ class PlotPanel extends JPanel {
     double yMax;
     final int PAD = 20;
     final boolean DEBUG = false;
+    boolean polygon = true; // If set to true, the lines will close
     boolean firstTime;  // Set at end of setData method.
  
     public PlotPanel(double[] x, double[] y) {
@@ -90,7 +91,7 @@ class PlotPanel extends JPanel {
         
         // Draw Line
         if(true){
-        	drawLine(g2, offset, w, h);
+        	drawLine(g2, offset, w, h, polygon);
         }
         
         // Draw extreme data values.
@@ -119,17 +120,27 @@ class PlotPanel extends JPanel {
         firstTime = false;
     }
     
-    public void drawLine(Graphics2D g2, Point2D.Double offset, int w, int h){
+    public void drawLine(Graphics2D g2, Point2D.Double offset, int w, int h, boolean polygon){
+    	double x1, y1, x2, y2;
     	// Draw lines
         double xInc = (double)(w - 2*PAD)/(xMax-xMin);
         double scale = (double)(h - 2*PAD)/(yMax-yMin);
         g2.setPaint(Color.GREEN.darker());
-        for(int i = 0; i < y.length - 1; i++){
-        	double x1 = offset.x + x[i]*xInc;
-        	double y1 = offset.y - scale * y[i];
-        	double x2 = offset.x + x[i+1]*xInc;
-        	double y2 = offset.y - scale * y[i+1];
-        	g2.draw(new Line2D.Double(x1,y1,x2,y2));
+        for(int i = 0; i < y.length; i++){
+        	if (i < y.length - 1){
+        		x1 = offset.x + x[i]*xInc;
+        		y1 = offset.y - scale * y[i];
+        		x2 = offset.x + x[i+1]*xInc;
+        		y2 = offset.y - scale * y[i+1];
+        		g2.draw(new Line2D.Double(x1, y1, x2, y2));
+        	}
+        	else if (polygon){
+        		x1 = offset.x + x[i]*xInc;
+        		y1 = offset.y - scale * y[i];
+        		x2 = offset.x + x[0]*xInc;
+        		y2 = offset.y - scale * y[0];
+        		g2.draw(new Line2D.Double(x1, y1, x2, y2));
+        	}
         }
     }
     
