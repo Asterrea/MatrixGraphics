@@ -38,7 +38,7 @@ class PlotPanel extends JPanel {
         int w = getWidth();
         int h = getHeight();
         double xScale = (w - 2*PAD)/(xMax - xMin);
-        double yScale = (h - 2*PAD)/(yMax - yMin);
+        double yScale = (2*PAD - h)/(yMax - yMin);
         if(firstTime)
             System.out.printf("xScale = %.1f  yScale = %.1f%n",
                                xScale, yScale);
@@ -55,14 +55,14 @@ class PlotPanel extends JPanel {
             offset.x = PAD - xScale*xMin;
         }
         if(yMax < 0) {
-            origin.y = h - PAD;
+            origin.y = PAD;
             offset.y = origin.y - yScale*yMax;
         } else if(yMin < 0) {
-            origin.y = PAD - yScale*yMin;
+            origin.y = PAD - yScale*yMax;
             offset.y = origin.y;
         } else {
-            origin.y = PAD;
-            offset.y = PAD - yScale*yMin;
+            origin.y = h- PAD;
+            offset.y = PAD - yScale*yMax;
         }
         if(firstTime) {
             System.out.printf("origin = [%6.1f, %6.1f]%n", origin.x, origin.y);
