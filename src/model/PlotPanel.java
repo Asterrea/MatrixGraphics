@@ -23,6 +23,7 @@ class PlotPanel extends JPanel {
     double yMax;
     final int PAD = 20;
     final boolean DEBUG = false;
+    boolean polygon = true; // If set to true, the lines will close
     boolean firstTime;  // Set at end of setData method.
  
     public PlotPanel(double[] x, double[] y) {
