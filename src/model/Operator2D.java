@@ -119,5 +119,46 @@ public class Operator2D {
 		temp.Multiply(1);
 		Operator2D.Translate(original, temp);
 	}
+	
+	public static void VerticalShear(Vector original, double offset) {
+		original.Add(new Vector(original.getY() * offset,0));
+	}
+	
+	public static void VerticalShear(Line original, double offset) {
+		Vector[] temp = original.getPoints();
+		for(int i = 0; i < temp.length; i++) {
+			temp[i].Add(new Vector(temp[i].getY() * offset,0));
+		}
+		original.setPoints(temp);
+	}
+	
+	public static void VerticalShear(Shape original, double offset) {
+		Vector[] temp = original.getPoints();
+		for(int i = 0; i < temp.length; i++) {
+			temp[i].Add(new Vector(temp[i].getY() * offset,0));
+		}
+		original.setPoints(temp);
+	}
+	
+	public static void HorizontalShear(Vector original, double offset) {
+		original.Add(new Vector(0,original.getX() * offset));
+	}
+	
+	public static void HorizontalShear(Line original, double offset) {
+		Vector[] temp = original.getPoints();
+		for(int i = 0; i < temp.length; i++) {
+			temp[i].Add(new Vector(0,temp[i].getX() * offset));
+		}
+		original.setPoints(temp);
+	
+	}
+	
+	public static void HorizontalShear(Shape original, double offset) {
+		Vector[] temp = original.getPoints();
+		for(int i = 0; i < temp.length; i++) {
+			temp[i].Add(new Vector(0,temp[i].getX() * offset));
+		}
+		original.setPoints(temp);
+	}
 }
 	
