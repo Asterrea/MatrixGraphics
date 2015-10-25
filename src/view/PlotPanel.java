@@ -30,7 +30,7 @@ class PlotPanel extends JPanel {
  
     public PlotPanel(ArrayList<Double> x, ArrayList<Double> y) {
         setData(x, y);
-        setPreferredSize(new Dimension(900,650));
+        setPreferredSize(new Dimension(900,700));
     }
  
     protected void paintComponent(Graphics g) {
@@ -47,6 +47,7 @@ class PlotPanel extends JPanel {
                                xScale, yScale);
         Point2D.Double origin = new Point2D.Double(); // Axes origin.
         Point2D.Double offset = new Point2D.Double(); // Locate data.
+        
         if(xMax < 0) {
             origin.x = w - PAD;
             offset.x = origin.x - xScale*xMax;
@@ -121,8 +122,7 @@ class PlotPanel extends JPanel {
         y = offset.y + yScale*yMax;
         g2.drawString(s, (float)origin.x+1, (float)y);
         if(firstTime)
-            System.out.println("------------------------------");
-        firstTime = false;
+        	firstTime = false;
         
     }
     

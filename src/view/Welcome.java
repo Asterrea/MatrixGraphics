@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -152,26 +153,32 @@ public class Welcome extends JPanel {
     class GraphPanelListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
-
-        	Plot2D_test plot = new Plot2D_test();
-        	
-			JFrame frame = new JFrame();
-			frame.add(plot.initGraph());
 			
-			
-			for(String rowLine : pointBox.getText().split("\\n")){
-				String[] bits = rowLine.split(",");
-				int x = Integer.parseInt(bits[bits.length-2]);
-				int y = Integer.parseInt(bits[bits.length-1]);
-				plot.addPlot(x, y);
+			if(pointBox.getText().isEmpty()){
+				 JOptionPane.showMessageDialog(null, "Please input at least one point");
+			}else{
+	        	Plot2D_test plot = new Plot2D_test();
+	        	OperationBox operations = new OperationBox();
+	        	
+				JFrame frame = new JFrame();
+				frame.add(plot.initGraph());
+				frame.add(operations);
+				
+				for(String rowLine : pointBox.getText().split("\\n")){
+					String[] bits = rowLine.split(",");
+					int x = Integer.parseInt(bits[bits.length-2]);
+					int y = Integer.parseInt(bits[bits.length-1]);
+					plot.addPlot(x, y);
+				}
+				
+				operations.showActionListenerDemo();
+				
+	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				frame.pack();             			
+	            frame.setLocationRelativeTo(null);  
+	            frame.setVisible(true);   
 			}
-			
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			
-			frame.pack();             			
-            frame.setLocationRelativeTo(null);  
-            frame.setVisible(true);   
-			
 		}
     }
     
