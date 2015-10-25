@@ -183,8 +183,8 @@ public class Welcome extends JPanel {
 				//split and convert
 				for(String rowLine : pointBox.getText().split("\\n")){
 					String[] bits = rowLine.split(",");
-					int x = Integer.parseInt(bits[bits.length-2]);
-					int y = Integer.parseInt(bits[bits.length-1]);
+					int x = parseConvert(bits, 2);
+					int y = parseConvert(bits, 1);
 					plot.addPlot(x, y);
 					operations.getXValues().add((double) x);
 					operations.getYValues().add((double) y);
@@ -193,15 +193,24 @@ public class Welcome extends JPanel {
 				operations.showActionListenerDemo();
 				
 				EquationController equation = new EquationController();
-				equation.getObject(typeObject);
+				equation.setType(typeObject);
+				equation.setMagnitude(Double.parseDouble(magTxt.getText()));
+				equation.setvDistance(Double.parseDouble(vTxt.getText()));
+				equation.sethDistance(Double.parseDouble(hTxt.getText()));
+				equation.setOrientation(oBox.getSelectedItem().toString());
 				
-	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				equation.getValues();
 				
+	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame.pack();             			
 	            frame.setLocationRelativeTo(null);  
 	            frame.setVisible(true);   
 			}
 		}
+    }
+    
+    public int parseConvert(String[] s , int pos){
+    	return Integer.parseInt(s[s.length - pos]);
     }
     
     class CustomActionListener implements ActionListener{
