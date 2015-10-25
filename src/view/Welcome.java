@@ -245,10 +245,6 @@ public class Welcome extends JPanel {
 					JOptionPane.showMessageDialog(null, "Please input the correct information.");
 				}
 				
-				if(typeObject.equals("PARABOLA") && typeObject.equals("HYPERBOLA")){
-					eq.setOrientation(oBox.getSelectedItem().toString());
-				}
-				
 				operations.showActionListenerDemo();
 				
 	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
