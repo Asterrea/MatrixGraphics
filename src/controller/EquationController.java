@@ -27,16 +27,11 @@ public class EquationController {
 		System.out.println(hDistance);
 		System.out.println(vDistance);
 		System.out.println(orientation);
-
-//		for(int i = 0 ; i < dataPoints.size() ; i++){
-//			Matrix matrix = new Matrix(dataPoints.get(i));
-//			matrix.printMatrix();
-//			System.out.println();
-//		}
 		
 		translate(4, -3);
 		rotate_cc(90);
 		scale(5);
+		reflect(1, -1); //reflect in x-axis
 	}
 	
 	//translation
@@ -85,7 +80,7 @@ public class EquationController {
 
 	}
 	
-	//scale by factor
+	//scale by factor (constant scaling)
 	public void scale(double factor){
 		System.out.printf("SCALING BY FACTOR OF "+ "%.2f " + " :", factor);
 		System.out.println();
@@ -102,6 +97,76 @@ public class EquationController {
 			
 			System.out.println("Translated Point Matrix: ");
 			result = scaleMatrix.multiply(matrix);
+			
+			result.printMatrix();
+			System.out.println();
+		}
+	}
+	
+	//reflect (-) y : reflect in x-axis; (-) x : reflect in y-axis
+	public void reflect(int x, int y){
+		System.out.println("Reflect:");
+		double[][] reflect_points =  {{x,0,0}, {0,y,0}, {0,0,1}};
+
+		Matrix reflectMatrix = new Matrix(reflect_points);
+		
+		for(int i = 0; i < dataPoints.size() ; i++){
+			Matrix matrix = new Matrix(dataPoints.get(i));
+			
+			System.out.println("Original Point Matrix: ");
+			matrix.printMatrix();
+			System.out.println();
+			
+			System.out.println("Translated Point Matrix: ");
+			result = reflectMatrix.multiply(matrix);
+			
+			result.printMatrix();
+			System.out.println();
+		}	
+	}
+	
+	//shear along x axis
+	public void shearX(double degrees){
+		System.out.println("Shear along X:");
+		double radians = Math.toRadians(degrees);
+		double x = Math.tan(radians);
+		double[][] shearX_point =  {{1,x,0}, {0,1,0}, {0,0,1}};
+		
+		Matrix shearMatrix = new Matrix(shearX_point);
+		
+		for(int i = 0; i < dataPoints.size() ; i++){
+			Matrix matrix = new Matrix(dataPoints.get(i));
+			
+			System.out.println("Original Point Matrix: ");
+				matrix.printMatrix();
+				System.out.println();
+				
+			System.out.println("Translated Point Matrix: ");
+			result = shearMatrix.multiply(matrix);
+			
+			result.printMatrix();
+			System.out.println();
+		}
+	}
+	
+	//shear along y axis
+	public void shearY(double degrees){
+		System.out.println("Shear along Y:");
+		double radians = Math.toRadians(degrees);
+		double x = Math.tan(radians);
+		double[][] shearX_point =  {{1,0,0}, {x,1,0}, {0,0,1}};
+		
+		Matrix shearMatrix = new Matrix(shearX_point);
+		
+		for(int i = 0; i < dataPoints.size() ; i++){
+			Matrix matrix = new Matrix(dataPoints.get(i));
+			
+			System.out.println("Original Point Matrix: ");
+				matrix.printMatrix();
+				System.out.println();
+				
+			System.out.println("Translated Point Matrix: ");
+			result = shearMatrix.multiply(matrix);
 			
 			result.printMatrix();
 			System.out.println();
