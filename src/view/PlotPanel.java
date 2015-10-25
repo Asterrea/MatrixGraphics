@@ -15,6 +15,10 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import controller.EquationController;
+
+import static java.lang.Math.sqrt;
+
 class PlotPanel extends JPanel {
     ArrayList<Double> x;
     ArrayList<Double> y;
@@ -27,13 +31,19 @@ class PlotPanel extends JPanel {
     boolean line; 
     boolean polygon; 
     boolean firstTime; 
+    String type;
+    EquationController equation;
  
     public PlotPanel(ArrayList<Double> x, ArrayList<Double> y) {
-        setData(x, y, false, false);
+        setData(x, y, false, false, null);
         setPreferredSize(new Dimension(700,600));
         
     }
- 
+    
+    public void setEquation(EquationController equation){
+    	this.equation = equation;
+    }
+    
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
@@ -141,7 +151,19 @@ class PlotPanel extends JPanel {
         		y2 = offset.y - scale * y.get(i+1);
         		g2.draw(new Line2D.Double(x1, y1, x2, y2));
         	}
-        	else if (polygon){
+        	
+        	if (type.equalsIgnoreCase("PARABOLA")){
+        		if (equation.getOrientation().equalsIgnoreCase("VERTICAL")){
+        			for(int j = 0; j <= 500; j++){
+        				double vertParabola = sqrt(4 * equation.getMagnitude() * (j - y.get(0))) + x.get(0);
+        				int X = (int) vertParabola;
+        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) - X, (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) - X);
+        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) + X, (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) + X);
+        			}
+        		}
+        	}
+        	
+        	if (polygon){
         		x1 = offset.x + x.get(i)*xInc;
         		y1 = offset.y - scale * y.get(i);
         		x2 = offset.x + x.get(0)*xInc;
@@ -151,9 +173,10 @@ class PlotPanel extends JPanel {
         }
     }
     
-    public void setData(ArrayList<Double> x, ArrayList<Double> y, boolean line, boolean polygon) {
+    public void setData(ArrayList<Double> x, ArrayList<Double> y, boolean line, boolean polygon, String type) {
     	this.line = line;
     	this.polygon = polygon;
+    	this.type = type;
     	
         if(x.size() != y.size()) {
             throw new IllegalArgumentException("x and y data arrays " +
