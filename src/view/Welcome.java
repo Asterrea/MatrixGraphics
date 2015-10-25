@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import controller.EquationController;
 
 public class Welcome extends JPanel {
+<<<<<<< HEAD
     private JLabel jcomp1;
     private JLabel jcomp2;
     private JButton btnPoint;
@@ -45,6 +46,34 @@ public class Welcome extends JPanel {
     private JComboBox oBox;
     private JButton btnCreate;
     private JButton btnReset;
+=======
+
+     JLabel jcomp1;
+     JLabel jcomp2;
+     JButton btnPoint;
+     JButton btnLine;
+     JButton btnEllipse;
+     JButton btnPolygon;
+     JButton btnHyperbola;
+     JButton btnParabola;
+     JButton btnVector;
+     JLabel xLabel;
+     JLabel yLabel;
+     JTextField xTxt;
+     JTextField yTxt;
+     JButton btnAdd;
+     JTextArea pointBox;
+     JLabel magLabel;
+     JTextField magTxt;
+     JLabel hLabel;
+     JTextField hTxt;
+     JLabel vLabel;
+     JTextField vTxt;
+     JLabel orientationLabel;
+     JComboBox oBox;
+     JButton btnCreate;
+     JButton btnReset;
+>>>>>>> origin/master
     
     ArrayList<Double> x;
     ArrayList<Double> y;
@@ -189,10 +218,25 @@ public class Welcome extends JPanel {
 				
 				frame.add(plot.initGraph());
 				frame.add(operations);
+<<<<<<< HEAD
 				
 				eq.setType(typeObject);
+=======
+>>>>>>> origin/master
 				
 				try{
+					
+					eq.setType(typeObject);
+					if(!magTxt.getText().isEmpty()){
+						eq.setMagnitude(Double.parseDouble(magTxt.getText()));
+					}else if (!vTxt.getText().isEmpty() && !hTxt.getText().isEmpty()){
+						eq.setvDistance(Double.parseDouble(vTxt.getText()));
+						eq.sethDistance(Double.parseDouble(hTxt.getText()));	
+					}else if(typeObject.equals("PARABOLA") && typeObject.equals("HYPERBOLA")){
+						eq.setOrientation(oBox.getSelectedItem().toString());
+					}
+		
+					
 					if(typeObject.equalsIgnoreCase("PARABOLA")){
 						eq.setMagnitude(Double.parseDouble(magTxt.getText()));
 					}
@@ -216,27 +260,33 @@ public class Welcome extends JPanel {
 						line = true;
 						polygon = true;
 					}
-					
+
 					//split and convert
 					for(String rowLine : pointBox.getText().split("\\n")){
 						String[] bits = rowLine.split(",");
 						double x = parseConvert(bits, 2);
 						double y = parseConvert(bits, 1);
 						plot.addPlot(x, y, line, polygon, typeObject);
-						operations.getXValues().add(x);
-						operations.getYValues().add(y);
+						operations.getXValues().add((double) x);
+						operations.getYValues().add((double) y);
 						
 						//add data point -> matrix
 						double[][] data = {{x},{y},{1}};
+<<<<<<< HEAD
 						eq.addDataPoints(data);
 						
 					}
 					plot.setEquation(eq);
 					
 					eq.getValues(); //test values
+=======
+						operations.addDataPoints(data);
+					}
+>>>>>>> origin/master
 					
+					plot.setEquation(eq);
 					operations.showActionListenerDemo();
-					
+		
 		            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					frame.pack();             			
 		            frame.setLocationRelativeTo(null);  
@@ -245,6 +295,13 @@ public class Welcome extends JPanel {
 				} catch(Exception ex){
 					JOptionPane.showMessageDialog(null, "Please input the correct information.");
 				}
+
+				operations.showActionListenerDemo();
+				
+	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				frame.pack();             			
+	            frame.setLocationRelativeTo(null);  
+	            frame.setVisible(true);   
 			}
 		}
     }
