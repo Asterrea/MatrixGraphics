@@ -169,7 +169,8 @@ public class Welcome extends JPanel {
 				JOptionPane.showMessageDialog(null, "Please input a Magnitude.");
 			}else if (typeObject.equals("HYPERBOLA") && hTxt.getText().isEmpty() && vTxt.getText().isEmpty()){
 				JOptionPane.showMessageDialog(null, "Please input Vertical and Horizontal Distances.");
-			}else{
+			}else {
+				
 	        	Plot2D_test plot = new Plot2D_test();
 	        	OperationBox operations = new OperationBox();
 	        	
@@ -189,17 +190,23 @@ public class Welcome extends JPanel {
 					operations.getXValues().add((double) x);
 					operations.getYValues().add((double) y);
 				}
+
+				EquationController equation = new EquationController();
+				
+				equation.setType(typeObject);
+				if(!magTxt.getText().isEmpty()){
+					equation.setMagnitude(Double.parseDouble(magTxt.getText()));
+				}else if (!vTxt.getText().isEmpty() && !hTxt.getText().isEmpty()){
+					equation.setvDistance(Double.parseDouble(vTxt.getText()));
+					equation.sethDistance(Double.parseDouble(hTxt.getText()));
+				}
+				if(typeObject.equals("PARABOLA") && typeObject.equals("HYPERBOLA")){
+					equation.setOrientation(oBox.getSelectedItem().toString());
+				}
+				
+				equation.getValues(); //test values
 				
 				operations.showActionListenerDemo();
-				
-				EquationController equation = new EquationController();
-				equation.setType(typeObject);
-				equation.setMagnitude(Double.parseDouble(magTxt.getText()));
-				equation.setvDistance(Double.parseDouble(vTxt.getText()));
-				equation.sethDistance(Double.parseDouble(hTxt.getText()));
-				equation.setOrientation(oBox.getSelectedItem().toString());
-				
-				equation.getValues();
 				
 	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame.pack();             			
