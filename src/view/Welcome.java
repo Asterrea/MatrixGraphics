@@ -222,7 +222,7 @@ public class Welcome extends JPanel {
 						String[] bits = rowLine.split(",");
 						double x = parseConvert(bits, 2);
 						double y = parseConvert(bits, 1);
-						plot.addPlot(x, y, line, polygon);
+						plot.addPlot(x, y, line, polygon, typeObject);
 						operations.getXValues().add(x);
 						operations.getYValues().add(y);
 						
@@ -231,6 +231,7 @@ public class Welcome extends JPanel {
 						equation.addDataPoints(data);
 						
 					}
+					plot.setEquation(equation);
 					
 					equation.getValues(); //test values
 					
