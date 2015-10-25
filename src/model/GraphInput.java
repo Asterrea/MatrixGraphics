@@ -1,20 +1,27 @@
 package model;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class GraphInput extends JPanel {
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+
+public class GraphInput extends JPanel implements ActionListener{
     private JLabel labelX;
     private JLabel labelY;
     private JTextField inputX;
     private JTextField inputY;
     private JButton buttonAdd;
     private JLabel labelOperation;
-    private JComboBox selectOperation;
+    private JComboBox<String> selectOperation;
     private JLabel labelObject;
-    private JComboBox selectObject;
+    private JComboBox<String> selectObject;
     private JLabel labelScale;
     private JLabel labelDegree;
     private JTextField inputFactor;
@@ -23,11 +30,11 @@ public class GraphInput extends JPanel {
     private JTextField inputAxis;
     private JTextArea textGenerate;
     private JButton buttonGenerate;
-
-    public GraphInput() {
+    
+	public GraphInput() {
         //construct preComponents
         String[] selectOperationItems = {"Translate", "Rotate", "Shear", "Scale", "Dilate", "Contract", "Reflect"};
-        String[] selectObjectItems = {"Circle", "Ellipse", "Parabola", "Hyperbola"};
+        String[] selectObjectItems = {"Point","Line Segment","Ellipse", "Parabola", "Hyperbola", "Polygon","Vector"};
 
         //construct components
         labelX = new JLabel ("Input X:");
@@ -36,9 +43,9 @@ public class GraphInput extends JPanel {
         inputY = new JTextField (1);
         buttonAdd = new JButton ("Add Point");
         labelOperation = new JLabel ("Operation:");
-        selectOperation = new JComboBox (selectOperationItems);
+        selectOperation = new JComboBox<String> (selectOperationItems);
         labelObject = new JLabel ("Object:");
-        selectObject = new JComboBox (selectObjectItems);
+        selectObject = new JComboBox<String> (selectObjectItems);
         labelScale = new JLabel ("Factor:");
         labelDegree = new JLabel ("Degree:");
         inputFactor = new JTextField (1);
@@ -89,14 +96,19 @@ public class GraphInput extends JPanel {
         inputAxis.setBounds (610, 45, 100, 25);
         textGenerate.setBounds (20, 115, 695, 85);
         buttonGenerate.setBounds (615, 205, 100, 25);
+        
+        labelScale.setVisible(false);
+        inputFactor.setVisible(false);
+        labelDegree.setVisible(false);
+        inputDegree.setVisible(false);
+        labelAxis.setVisible(false);
+        inputAxis.setVisible(false);
     }
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println(e.getActionCommand());
+		
+	}
 
-    public static void main (String[] args) {
-        JFrame frame = new JFrame ("MyPanel");
-        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add (new GraphInput());
-        frame.pack();
-        frame.setVisible (true);
-    }
 }

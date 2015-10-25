@@ -11,22 +11,24 @@ import java.awt.font.LineMetrics;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 class PlotPanel extends JPanel {
-    double[] x;
-    double[] y;
+    ArrayList<Double> x;
+    ArrayList<Double> y;
     double xMin;
     double xMax;
     double yMin;
     double yMax;
     final int PAD = 20;
     final boolean DEBUG = false;
-    boolean polygon = true; // If set to true, the lines will close
+    boolean line = true; // This is for line mode.
+    boolean polygon = true; // This is for polygon mode. (Line should be set to true)
     boolean firstTime;  // Set at end of setData method.
  
-    public PlotPanel(double[] x, double[] y) {
+    public PlotPanel(ArrayList<Double> x, ArrayList<Double> y) {
         setData(x, y);
         setPreferredSize(new Dimension(400,400));
     }
@@ -62,7 +64,7 @@ class PlotPanel extends JPanel {
             origin.y = PAD - yScale*yMax;
             offset.y = origin.y;
         } else {
-            origin.y = h- PAD;
+            origin.y = h - PAD;
             offset.y = PAD - yScale*yMax;
         }
         if(firstTime) {
@@ -78,17 +80,24 @@ class PlotPanel extends JPanel {
         // Mark origin.
         g2.fill(new Ellipse2D.Double(origin.x-2, origin.y-2, 4, 4));
  
-        // Plot data.
-        g2.setPaint(Color.blue);
-        for(int i = 0; i < x.length; i++) {
-            double x1 = offset.x + xScale*x[i];
-            double y1 = offset.y + yScale*y[i];
-            if(firstTime)
-                System.out.printf("i = %d  x1 = %6.1f  y1 = %.1f%n", i, x1, y1);
-            g2.fill(new Ellipse2D.Double(x1-2, y1-2, 4, 4));
-            g2.drawString(String.valueOf(i), (float)x1+3, (float)y1-3);
+        // Plot data if one or many points exist.
+        if (!(x.isEmpty()) && !(y.isEmpty())){
+	        g2.setPaint(Color.blue);
+	        for(int i = 0; i < x.size(); i++) {
+	            double x1 = offset.x + xScale*x.get(i);
+	            double y1 = offset.y + yScale*y.get(i);
+	            if(firstTime)
+	                System.out.printf("i = %d  x1 = %6.1f  y1 = %.1f%n", i, x1, y1);
+	            g2.fill(new Ellipse2D.Double(x1-2, y1-2, 4, 4));
+	            g2.drawString(String.valueOf(i), (float)x1+3, (float)y1-3);
+	        }
+	        
+	        // Draw Line
+	        if(line){
+	        	drawLine(g2, offset, w, h, polygon);
+	        }
         }
- 
+        
         // Draw extreme data values.
         g2.setPaint(Color.black);
         Font font = g2.getFont();
@@ -113,10 +122,35 @@ class PlotPanel extends JPanel {
         if(firstTime)
             System.out.println("------------------------------");
         firstTime = false;
+        
     }
- 
-    public void setData(double[] x, double[] y) {
-        if(x.length != y.length) {
+    
+    public void drawLine(Graphics2D g2, Point2D.Double offset, int w, int h, boolean polygon){
+    	double x1, y1, x2, y2;
+    	// Draw lines
+        double xInc = (double)(w - 2*PAD)/(xMax-xMin);
+        double scale = (double)(h - 2*PAD)/(yMax-yMin);
+        g2.setPaint(Color.GREEN.darker());
+        for(int i = 0; i < y.size(); i++){
+        	if (i < y.size() - 1){
+        		x1 = offset.x + x.get(i)*xInc;
+        		y1 = offset.y - scale * y.get(i);
+        		x2 = offset.x + x.get(i+1)*xInc;
+        		y2 = offset.y - scale * y.get(i+1);
+        		g2.draw(new Line2D.Double(x1, y1, x2, y2));
+        	}
+        	else if (polygon){
+        		x1 = offset.x + x.get(i)*xInc;
+        		y1 = offset.y - scale * y.get(i);
+        		x2 = offset.x + x.get(0)*xInc;
+        		y2 = offset.y - scale * y.get(0);
+        		g2.draw(new Line2D.Double(x1, y1, x2, y2));
+        	}
+        }
+    }
+    
+    public void setData(ArrayList<Double> x, ArrayList<Double> y) {
+        if(x.size() != y.size()) {
             throw new IllegalArgumentException("x and y data arrays " +
                                                "must be same length.");
         }
@@ -133,18 +167,50 @@ class PlotPanel extends JPanel {
         if(DEBUG)
             System.out.printf("yMin = %5.1f  yMax = %5.1f%n", yMin, yMax);
         firstTime = DEBUG;
+        
+        // Check if the graph has no points
+        if (xMin == Double.MAX_VALUE && xMax == -(Double.MAX_VALUE)){
+        	xMin = -10;
+        	xMax = 10;
+        }
+        if (yMin == Double.MAX_VALUE && yMax == -(Double.MAX_VALUE)){
+        	yMin = -10;
+        	yMax = 10;
+        }
+        
+        // Offset the min and max of x and y axis if there is only one point
+        if (xMin == xMax){
+        	xMin -= 10;
+        	xMax += 10;
+        }
+        if (yMin == yMax){
+        	yMin -= 10;
+        	yMax += 10;
+        }
+        
+        // Show the correct origin if the min value exceeds 0 and vice versa.
+        if (xMin > 0){
+        	xMin = 0;
+        } else if (xMax < 0){
+        	xMax = 0;
+        }
+        if (yMin > 0){
+        	yMin = 0;
+        } else if (yMax < 0){
+        	yMax = 0;
+        }
         repaint();
     }
  
-    private double[] getExtremeValues(double[] d) {
+    private double[] getExtremeValues(ArrayList<Double> d) {
         double min = Double.MAX_VALUE;
         double max = -min;
-        for(int i = 0; i < d.length; i++) {
-            if(d[i] < min) {
-                min = d[i];
+        for(int i = 0; i < d.size(); i++) {
+            if(d.get(i) < min) {
+                min = d.get(i);
             }
-            if(d[i] > max) {
-                max = d[i];
+            if(d.get(i) > max) {
+                max = d.get(i);
             }
         }
         return new double[] { min, max };
