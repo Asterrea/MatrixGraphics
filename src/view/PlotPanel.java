@@ -156,6 +156,10 @@ class PlotPanel extends JPanel {
         		drawParabola(g2, offset, xInc, scale);
         	} else if (type.equalsIgnoreCase("ELLIPSE")){
         		drawEllipse(g2, offset, xInc, scale);
+        	} else if (type.equalsIgnoreCase("VECTOR")){
+        		g2.draw(new Line2D.Double((offset.x + x.get(0) * xInc), (offset.y - scale * y.get(0)), offset.x, offset.y));
+        	} else if (type.equalsIgnoreCase("HYPERBOLA")){
+        		drawHyperbola(g2, offset, xInc, scale);
         	}
         	
         	if (polygon){
@@ -174,39 +178,44 @@ class PlotPanel extends JPanel {
 		if (equation.getOrientation().equalsIgnoreCase("VERTICAL")){
 			if (isPositive){
     			for(int i = 0; i <= 500; i++){
-    				double vertParabola = sqrt(4 * equation.getMagnitude() * (i - y.get(0))) + x.get(0);
-    				int X = (int) vertParabola;
-    				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + X, (int) (offset.y - scale * y.get(0)) - i, (int) (offset.x + x.get(0)*xInc) + X, (int) (offset.y - scale * y.get(0)) - i);
-    				g2.drawLine( (int) (offset.x + x.get(0)*xInc) - X, (int) (offset.y - scale * y.get(0)) - i, (int) (offset.x + x.get(0)*xInc) - X, (int) (offset.y - scale * y.get(0)) - i);
+    				double vertParabola = sqrt(4 * (equation.getMagnitude() * xInc) * (i - y.get(0))) + x.get(0);
+    				double X = vertParabola;
+    				g2.draw( new Line2D.Double( (offset.x + x.get(0)*xInc) + X, (offset.y - scale * y.get(0)) - i, (offset.x + x.get(0)*xInc) + X, (offset.y - scale * y.get(0)) - i));
+    				g2.draw( new Line2D.Double( (offset.x + x.get(0)*xInc) - X, (offset.y - scale * y.get(0)) - i, (offset.x + x.get(0)*xInc) - X, (offset.y - scale * y.get(0)) - i));
     			}
 			} else {
 				for(int i = 0; i <= 500; i++){
-    				double vertParabola = sqrt(4 * -(equation.getMagnitude()) * (i - y.get(0))) + x.get(0);
-    				int X = (int) vertParabola;
-    				g2.drawLine( (int) (offset.x + x.get(0)*xInc) - X, (int) (offset.y - scale * y.get(0)) + i, (int) (offset.x + x.get(0)*xInc) - X, (int) (offset.y - scale * y.get(0)) + i);
-    				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + X, (int) (offset.y - scale * y.get(0)) + i, (int) (offset.x + x.get(0)*xInc) + X, (int) (offset.y - scale * y.get(0)) + i);
+    				double vertParabola = sqrt(4 * -((equation.getMagnitude() * xInc)) * (i - y.get(0))) + x.get(0);
+    				double X = vertParabola;
+    				g2.draw( new Line2D.Double( (offset.x + x.get(0)*xInc) - X, (offset.y - scale * y.get(0)) + i, (offset.x + x.get(0)*xInc) - X, (offset.y - scale * y.get(0)) + i));
+    				g2.draw( new Line2D.Double( (offset.x + x.get(0)*xInc) + X, (offset.y - scale * y.get(0)) + i, (offset.x + x.get(0)*xInc) + X, (offset.y - scale * y.get(0)) + i));
     			}
 			}
 		} else if (equation.getOrientation().equalsIgnoreCase("HORIZONTAL")){
 			if (isPositive){
     			for(int i = 0; i <= 500; i++){
-    				double horParabola = sqrt(4 * equation.getMagnitude() * (i - y.get(0))) + x.get(0);
-    				int X = (int) horParabola;
-    				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + i, (int) (offset.y - scale * y.get(0)) - X, (int) (offset.x + x.get(0)*xInc) + i, (int) (offset.y - scale * y.get(0)) - X);
-    				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + i, (int) (offset.y - scale * y.get(0)) + X, (int) (offset.x + x.get(0)*xInc) + i, (int) (offset.y - scale * y.get(0)) + X);
+    				double horParabola = sqrt(4 * (scale * equation.getMagnitude()) * (i - y.get(0))) + x.get(0);
+    				double Y = horParabola;
+    				g2.draw( new Line2D.Double( (offset.x + x.get(0)*xInc) + i, (offset.y - scale * y.get(0)) - Y, (offset.x + x.get(0)*xInc) + i, (offset.y - scale * y.get(0)) - Y));
+    				g2.draw( new Line2D.Double( (offset.x + x.get(0)*xInc) + i, (offset.y - scale * y.get(0)) + Y, (offset.x + x.get(0)*xInc) + i, (offset.y - scale * y.get(0)) + Y));
     			}
 			} else {
 				for(int i = 0; i <= 500; i++){
-    				double horParabola = sqrt(4 * -(equation.getMagnitude()) * (i - y.get(0))) + x.get(0);
-    				int X = (int) horParabola;
-    				g2.drawLine( (int) (offset.x + x.get(0)*xInc) - i, (int) (offset.y - scale * y.get(0)) + X, (int) (offset.x + x.get(0)*xInc) - i, (int) (offset.y - scale * y.get(0)) + X);
-    				g2.drawLine( (int) (offset.x + x.get(0)*xInc) - i, (int) (offset.y - scale * y.get(0)) - X, (int) (offset.x + x.get(0)*xInc) - i, (int) (offset.y - scale * y.get(0)) - X);
+    				double horParabola = sqrt(4 * -((scale * equation.getMagnitude())) * (i - y.get(0))) + x.get(0);
+    				double Y = horParabola;
+    				g2.draw( new Line2D.Double( (offset.x + x.get(0)*xInc) - i, (offset.y - scale * y.get(0)) + Y, (offset.x + x.get(0)*xInc) - i, (offset.y - scale * y.get(0)) + Y));
+    				g2.draw( new Line2D.Double( (offset.x + x.get(0)*xInc) - i, (offset.y - scale * y.get(0)) - Y, (offset.x + x.get(0)*xInc) - i, (offset.y - scale * y.get(0)) - Y));
     			}
 			}
 		}
     }
     
+    public void drawHyperbola(Graphics2D g2, Point2D.Double offset, double xInc, double scale){
+    	
+    }
+    
     // Not efficient but working
+    // Referenced from https://www.linux.com/community/blogs/128-desktops/295620
     public void drawEllipse(Graphics2D g2, Point2D.Double offset, double xInc, double scale){
     	int x1, y1;
     	
@@ -230,6 +239,7 @@ class PlotPanel extends JPanel {
     	}
     	
     }
+    
     
     public void setData(ArrayList<Double> x, ArrayList<Double> y, boolean line, boolean polygon, String type) {
     	this.line = line;
