@@ -91,8 +91,8 @@ final public class Matrix {
                     C.DATA[i][j] += (A.DATA[i][k] * B.DATA[k][j]);
         return C;
     }
-    
-    // print matrix
+
+	// print matrix
     public void printMatrix() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) 
@@ -100,4 +100,12 @@ final public class Matrix {
             System.out.println();
         }
     }
+    
+    public double[][] getDATA() {
+		return DATA;
+	}
+
+	public void setDATA(double[][] dATA) {
+		DATA = dATA;
+	}
 }

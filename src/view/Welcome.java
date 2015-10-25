@@ -186,8 +186,8 @@ public class Welcome extends JPanel {
 				//split and convert
 				for(String rowLine : pointBox.getText().split("\\n")){
 					String[] bits = rowLine.split(",");
-					int x = parseConvert(bits, 2);
-					int y = parseConvert(bits, 1);
+					double x = parseConvert(bits, 2);
+					double y = parseConvert(bits, 1);
 					plot.addPlot(x, y);
 					operations.getXValues().add((double) x);
 					operations.getYValues().add((double) y);
@@ -220,8 +220,8 @@ public class Welcome extends JPanel {
 		}
     }
     
-    public int parseConvert(String[] s , int pos){
-    	return Integer.parseInt(s[s.length - pos]);
+    public double parseConvert(String[] s , int pos){
+    	return Double.parseDouble(s[s.length - pos]);
     }
     
     class CustomActionListener implements ActionListener{
