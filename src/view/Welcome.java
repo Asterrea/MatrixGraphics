@@ -193,6 +193,18 @@ public class Welcome extends JPanel {
 				eq.setType(typeObject);
 				
 				try{
+					
+					eq.setType(typeObject);
+					if(!magTxt.getText().isEmpty()){
+						eq.setMagnitude(Double.parseDouble(magTxt.getText()));
+					}else if (!vTxt.getText().isEmpty() && !hTxt.getText().isEmpty()){
+						eq.setvDistance(Double.parseDouble(vTxt.getText()));
+						eq.sethDistance(Double.parseDouble(hTxt.getText()));	
+					}else if(typeObject.equals("PARABOLA") && typeObject.equals("HYPERBOLA")){
+						eq.setOrientation(oBox.getSelectedItem().toString());
+					}
+		
+					
 					if(typeObject.equalsIgnoreCase("PARABOLA")){
 						eq.setMagnitude(Double.parseDouble(magTxt.getText()));
 					}
@@ -216,27 +228,26 @@ public class Welcome extends JPanel {
 						line = true;
 						polygon = true;
 					}
-					
+
 					//split and convert
 					for(String rowLine : pointBox.getText().split("\\n")){
 						String[] bits = rowLine.split(",");
 						double x = parseConvert(bits, 2);
 						double y = parseConvert(bits, 1);
 						plot.addPlot(x, y, line, polygon, typeObject);
-						operations.getXValues().add(x);
-						operations.getYValues().add(y);
+						operations.getXValues().add((double) x);
+						operations.getYValues().add((double) y);
 						
 						//add data point -> matrix
 						double[][] data = {{x},{y},{1}};
-						eq.addDataPoints(data);
 						
+						operations.addDataPoints(data);
 					}
 					plot.setEquation(eq);
-					
 					eq.getValues(); //test values
 					
 					operations.showActionListenerDemo();
-					
+		
 		            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					frame.pack();             			
 		            frame.setLocationRelativeTo(null);  
