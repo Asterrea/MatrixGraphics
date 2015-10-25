@@ -14,7 +14,6 @@ public class Plot2D_test {
     ArrayList<Double> x = new ArrayList<Double>();
     ArrayList<Double> y = new ArrayList<Double>();
     
-    
     // Add initial graph
     public JPanel initGraph(){
     	plotPanel = new PlotPanel(x,y);

@@ -1,8 +1,8 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import controller.EquationController;
 
 public class Welcome extends JPanel {
     private JLabel jcomp1;
@@ -41,8 +43,10 @@ public class Welcome extends JPanel {
     private JLabel orientationLabel;
     private JComboBox oBox;
     private JButton btnCreate;
+    
     ArrayList<Double> x;
     ArrayList<Double> y;
+    String typeObject;
     
     public Welcome() {
         //construct preComponents
@@ -80,7 +84,8 @@ public class Welcome extends JPanel {
         vTxt.setEnabled (false);
         oBox.setEnabled (false);
         pointBox.setEnabled(false);
-
+        pointBox.setDisabledTextColor(Color.BLACK);
+        
         //adjust size and set layout
         setPreferredSize (new Dimension (667, 393));
         setLayout (null);
@@ -139,7 +144,7 @@ public class Welcome extends JPanel {
   
     }
 
-    private void showActionListenerDemo(){               
+    public void showActionListenerDemo(){               
     	
         btnAdd.addActionListener(new CustomActionListener());        
         btnPoint.addActionListener(new CustomActionListener());
@@ -157,7 +162,13 @@ public class Welcome extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			
 			if(pointBox.getText().isEmpty()){
-				 JOptionPane.showMessageDialog(null, "Please input at least one point");
+				 JOptionPane.showMessageDialog(null, "Please input Point/s");
+			}else if (typeObject == null){
+				JOptionPane.showMessageDialog(null, "Please choose an object.");
+			}else if (typeObject.equals("PARABOLA") && magTxt.getText().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Please input a Magnitude.");
+			}else if (typeObject.equals("HYPERBOLA") && hTxt.getText().isEmpty() && vTxt.getText().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Please input Vertical and Horizontal Distances.");
 			}else{
 	        	Plot2D_test plot = new Plot2D_test();
 	        	OperationBox operations = new OperationBox();
@@ -169,22 +180,37 @@ public class Welcome extends JPanel {
 				frame.add(plot.initGraph());
 				frame.add(operations);
 				
+				//split and convert
 				for(String rowLine : pointBox.getText().split("\\n")){
 					String[] bits = rowLine.split(",");
-					int x = Integer.parseInt(bits[bits.length-2]);
-					int y = Integer.parseInt(bits[bits.length-1]);
+					int x = parseConvert(bits, 2);
+					int y = parseConvert(bits, 1);
 					plot.addPlot(x, y);
+					operations.getXValues().add((double) x);
+					operations.getYValues().add((double) y);
 				}
 				
 				operations.showActionListenerDemo();
 				
-	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				EquationController equation = new EquationController();
+				equation.setType(typeObject);
+				equation.setMagnitude(Double.parseDouble(magTxt.getText()));
+				equation.setvDistance(Double.parseDouble(vTxt.getText()));
+				equation.sethDistance(Double.parseDouble(hTxt.getText()));
+				equation.setOrientation(oBox.getSelectedItem().toString());
 				
+				equation.getValues();
+				
+	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame.pack();             			
 	            frame.setLocationRelativeTo(null);  
 	            frame.setVisible(true);   
 			}
 		}
+    }
+    
+    public int parseConvert(String[] s , int pos){
+    	return Integer.parseInt(s[s.length - pos]);
     }
     
     class CustomActionListener implements ActionListener{
@@ -203,6 +229,8 @@ public class Welcome extends JPanel {
             	oBox.setEnabled(false);
             	hTxt.setEnabled(false);
             	vTxt.setEnabled(false);
+            	typeObject = btnPoint.getText();
+            	
             }else if(e.getSource().equals(btnLine)){
             	btnPoint.setEnabled(true);
             	btnLine.setEnabled(false);
@@ -215,6 +243,8 @@ public class Welcome extends JPanel {
             	oBox.setEnabled(false);
             	hTxt.setEnabled(false);
             	vTxt.setEnabled(false);
+            	typeObject = btnLine.getText();
+            	
             }else if(e.getSource().equals(btnParabola)){
             	btnPoint.setEnabled(true);
             	btnLine.setEnabled(true);
@@ -227,6 +257,8 @@ public class Welcome extends JPanel {
             	oBox.setEnabled(true);
             	hTxt.setEnabled(false);
             	vTxt.setEnabled(false);
+            	typeObject = btnParabola.getText();
+            	
             }else if(e.getSource().equals(btnHyperbola)){
             	btnPoint.setEnabled(true);
             	btnLine.setEnabled(true);
@@ -239,6 +271,8 @@ public class Welcome extends JPanel {
             	oBox.setEnabled(true);
             	hTxt.setEnabled(true);
             	vTxt.setEnabled(true);
+            	typeObject = btnHyperbola.getText();
+            	
             }else if(e.getSource().equals(btnEllipse)){
             	btnPoint.setEnabled(true);
             	btnLine.setEnabled(true);
@@ -251,6 +285,8 @@ public class Welcome extends JPanel {
             	oBox.setEnabled(false);
             	hTxt.setEnabled(true);
             	vTxt.setEnabled(true);
+            	typeObject = btnEllipse.getText();
+            	
             }else if(e.getSource().equals(btnPolygon)){
             	btnPoint.setEnabled(true);
             	btnLine.setEnabled(true);
@@ -263,6 +299,8 @@ public class Welcome extends JPanel {
             	oBox.setEnabled(false);
             	hTxt.setEnabled(false);
             	vTxt.setEnabled(false);
+            	typeObject = btnPolygon.getText();
+            	
             }else if(e.getSource().equals(btnVector)){
             	btnPoint.setEnabled(true);
             	btnLine.setEnabled(true);
@@ -275,6 +313,7 @@ public class Welcome extends JPanel {
             	oBox.setEnabled(false);
             	hTxt.setEnabled(false);
             	vTxt.setEnabled(false);
+            	typeObject = btnVector.getText();
             }
             
             if(e.getSource().equals(btnAdd)){
