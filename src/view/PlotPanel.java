@@ -24,12 +24,12 @@ class PlotPanel extends JPanel {
     double yMax;
     final int PAD = 10;
     final boolean DEBUG = false;
-    boolean line = true; 
-    boolean polygon = true; 
+    boolean line; 
+    boolean polygon; 
     boolean firstTime; 
  
     public PlotPanel(ArrayList<Double> x, ArrayList<Double> y) {
-        setData(x, y);
+        setData(x, y, false, false);
         setPreferredSize(new Dimension(700,600));
         
     }
@@ -151,7 +151,10 @@ class PlotPanel extends JPanel {
         }
     }
     
-    public void setData(ArrayList<Double> x, ArrayList<Double> y) {
+    public void setData(ArrayList<Double> x, ArrayList<Double> y, boolean line, boolean polygon) {
+    	this.line = line;
+    	this.polygon = polygon;
+    	
         if(x.size() != y.size()) {
             throw new IllegalArgumentException("x and y data arrays " +
                                                "must be same length.");

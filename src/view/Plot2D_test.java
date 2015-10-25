@@ -20,10 +20,10 @@ public class Plot2D_test {
     	return plotPanel;
     }
     
-    public JPanel addPlot(double xInput, double yInput) {
+    public JPanel addPlot(double xInput, double yInput, boolean line, boolean polygon) {
         x.add(xInput);
         y.add(yInput);
-        plotPanel.setData(x, y);
+        plotPanel.setData(x, y, line, polygon);
         return plotPanel;
     }
 }
