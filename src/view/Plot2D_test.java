@@ -1,7 +1,8 @@
-package model;
+package view;
 
 import java.util.Random;
 import java.util.ArrayList;
+
 import javax.swing.*;
  
 public class Plot2D_test {
@@ -13,15 +14,13 @@ public class Plot2D_test {
     ArrayList<Double> x = new ArrayList<Double>();
     ArrayList<Double> y = new ArrayList<Double>();
     
-    public double[] getData(double min, double max) {
-        double[] d = new double[SIZE];
-        for(int i = 0; i < SIZE; i++) {
-            d[i] = min + seed.nextDouble()*(max - min);
-            //System.out.printf("%5.1f ", d[i]);
-        }
-        //System.out.println();
-        return d;
-    }
+//    public double[] getData(double min, double max) {
+//        double[] d = new double[SIZE];
+//        for(int i = 0; i < SIZE; i++) {
+//            d[i] = min + seed.nextDouble()*(max - min);
+//        }
+//        return d;
+//    }
     
     // Add initial graph
     public JPanel initGraph(){

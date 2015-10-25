@@ -3,6 +3,7 @@ package view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -11,8 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
-import model.Plot2D_test;
 
 public class Welcome extends JPanel {
     private JLabel jcomp1;
@@ -39,7 +38,9 @@ public class Welcome extends JPanel {
     private JLabel orientationLabel;
     private JComboBox oBox;
     private JButton btnCreate;
-
+    ArrayList<Double> x;
+    ArrayList<Double> y;
+    
     public Welcome() {
         //construct preComponents
         String[] oBoxItems = {"VERTICAL", "HORIZONTAL"};
@@ -151,15 +152,24 @@ public class Welcome extends JPanel {
     class GraphPanelListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
+
+        	Plot2D_test plot = new Plot2D_test();
+        	
 			JFrame frame = new JFrame();
-			
-			Plot2D_test plot = new Plot2D_test();
 			frame.add(plot.initGraph());
-			plot.addPlot(2, 4);
+			
+			
+			for(String rowLine : pointBox.getText().split("\\n")){
+				String[] bits = rowLine.split(",");
+				int x = Integer.parseInt(bits[bits.length-2]);
+				int y = Integer.parseInt(bits[bits.length-1]);
+				plot.addPlot(x, y);
+			}
+			
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			frame.pack();             			
-            frame.setLocationRelativeTo(null);  // center the application window
+            frame.setLocationRelativeTo(null);  
             frame.setVisible(true);   
 			
 		}
@@ -257,7 +267,6 @@ public class Welcome extends JPanel {
             
             if(e.getSource().equals(btnAdd)){
             	pointBox.append(xTxt.getText()+"," + yTxt.getText() + "\n");
-            	
             }
         }
      }	

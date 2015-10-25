@@ -2,10 +2,7 @@ package view;
 
 import java.awt.*;
 
-
 import javax.swing.*;
-
-import model.Plot2D_test;
  
 // Swing Program Template
 @SuppressWarnings("serial")

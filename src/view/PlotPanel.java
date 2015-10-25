@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,7 +22,7 @@ class PlotPanel extends JPanel {
     double xMax;
     double yMin;
     double yMax;
-    final int PAD = 20;
+    final int PAD = 10;
     final boolean DEBUG = false;
     boolean line = true; // This is for line mode.
     boolean polygon = true; // This is for polygon mode. (Line should be set to true)
@@ -30,7 +30,7 @@ class PlotPanel extends JPanel {
  
     public PlotPanel(ArrayList<Double> x, ArrayList<Double> y) {
         setData(x, y);
-        setPreferredSize(new Dimension(400,400));
+        setPreferredSize(new Dimension(900,650));
     }
  
     protected void paintComponent(Graphics g) {
