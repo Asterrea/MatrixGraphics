@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -171,9 +172,11 @@ public class Welcome extends JPanel {
 				JOptionPane.showMessageDialog(null, "Please input a Magnitude.");
 			}else if (typeObject.equals("HYPERBOLA") && hTxt.getText().isEmpty() && vTxt.getText().isEmpty()){
 				JOptionPane.showMessageDialog(null, "Please input Vertical and Horizontal Distances.");
-			}else{
+			}else {
+				
 	        	Plot2D_test plot = new Plot2D_test();
-	        	OperationBox operations = new OperationBox();
+	        	OperationBox operations = new OperationBox(); 
+	        	EquationController equation = new EquationController();
 	        	
 				JFrame frame = new JFrame();
 				frame.setSize(1000,700);
@@ -182,22 +185,21 @@ public class Welcome extends JPanel {
 				frame.add(plot.initGraph());
 				frame.add(operations);
 				
-				// Get the needed values for each type
-				EquationController equation = new EquationController();
 				equation.setType(typeObject);
-				if(typeObject.equalsIgnoreCase("PARABOLA")){
-					equation.setMagnitude(Double.parseDouble(magTxt.getText()));
+				try{
+					if(typeObject.equalsIgnoreCase("PARABOLA")){
+						equation.setMagnitude(Double.parseDouble(magTxt.getText()));
+					}
+					if(typeObject.equalsIgnoreCase("ELLIPSE") || typeObject.equalsIgnoreCase("HYPERBOLA")){
+						equation.setvDistance(Double.parseDouble(vTxt.getText()));
+						equation.sethDistance(Double.parseDouble(hTxt.getText()));
+					}
+					if(typeObject.equalsIgnoreCase("PARABOLA") || typeObject.equalsIgnoreCase("HYPERBOLA")){
+						equation.setOrientation(oBox.getSelectedItem().toString());
+					}
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(null, "Please input the correct information.");
 				}
-				if(typeObject.equalsIgnoreCase("ELLIPSE") || typeObject.equalsIgnoreCase("HYPERBOLA")){
-					equation.setvDistance(Double.parseDouble(vTxt.getText()));
-					equation.sethDistance(Double.parseDouble(hTxt.getText()));
-				}
-				if(typeObject.equalsIgnoreCase("PARABOLA") && typeObject.equalsIgnoreCase("HYPERBOLA")){
-					equation.setOrientation(oBox.getSelectedItem().toString());
-				}
-				
-				equation.getValues();
-				
 				
 				// Set the line type base on the type of object
 				if(typeObject.equalsIgnoreCase("POINT")){
@@ -220,7 +222,14 @@ public class Welcome extends JPanel {
 					plot.addPlot(x, y, line, polygon);
 					operations.getXValues().add(x);
 					operations.getYValues().add(y);
+					
+					//add data point -> matrix
+					double[][] data = {{x},{y},{1}};
+					equation.addDataPoints(data);
+					
 				}
+				
+				equation.getValues(); //test values
 				
 				operations.showActionListenerDemo();
 				
