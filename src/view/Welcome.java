@@ -186,6 +186,7 @@ public class Welcome extends JPanel {
 				frame.add(operations);
 				
 				equation.setType(typeObject);
+				
 				try{
 					if(typeObject.equalsIgnoreCase("PARABOLA")){
 						equation.setMagnitude(Double.parseDouble(magTxt.getText()));
@@ -197,52 +198,52 @@ public class Welcome extends JPanel {
 					if(typeObject.equalsIgnoreCase("PARABOLA") || typeObject.equalsIgnoreCase("HYPERBOLA")){
 						equation.setOrientation(oBox.getSelectedItem().toString());
 					}
-				}catch(Exception ex){
+				
+					// Set the line type base on the type of object
+					if(typeObject.equalsIgnoreCase("POINT")){
+						line = false;
+						polygon = false;
+					} else if (typeObject.equalsIgnoreCase("LINE") || typeObject.equalsIgnoreCase("PARABOLA") ||
+								typeObject.equalsIgnoreCase("HYPERBOLA") || typeObject.equalsIgnoreCase("VECTOR")){
+						line = true;
+						polygon = false;
+					} else if (typeObject.equalsIgnoreCase("ELLIPSE") || typeObject.equalsIgnoreCase("POLYGON")){
+						line = true;
+						polygon = true;
+					}
+					
+					//split and convert
+					for(String rowLine : pointBox.getText().split("\\n")){
+						String[] bits = rowLine.split(",");
+						double x = parseConvert(bits, 2);
+						double y = parseConvert(bits, 1);
+						plot.addPlot(x, y, line, polygon);
+						operations.getXValues().add(x);
+						operations.getYValues().add(y);
+						
+						//add data point -> matrix
+						double[][] data = {{x},{y},{1}};
+						equation.addDataPoints(data);
+						
+					}
+					
+					equation.getValues(); //test values
+					
+					operations.showActionListenerDemo();
+					
+		            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					frame.pack();             			
+		            frame.setLocationRelativeTo(null);  
+		            frame.setVisible(true);   
+				} catch(Exception ex){
 					JOptionPane.showMessageDialog(null, "Please input the correct information.");
 				}
-				
-				// Set the line type base on the type of object
-				if(typeObject.equalsIgnoreCase("POINT")){
-					line = false;
-					polygon = false;
-				} else if (typeObject.equalsIgnoreCase("LINE") || typeObject.equalsIgnoreCase("PARABOLA") ||
-							typeObject.equalsIgnoreCase("HYPERBOLA") || typeObject.equalsIgnoreCase("VECTOR")){
-					line = true;
-					polygon = false;
-				} else if (typeObject.equalsIgnoreCase("ELLIPSE") || typeObject.equalsIgnoreCase("POLYGON")){
-					line = true;
-					polygon = true;
-				}
-				
-				//split and convert
-				for(String rowLine : pointBox.getText().split("\\n")){
-					String[] bits = rowLine.split(",");
-					double x = parseConvert(bits, 2);
-					double y = parseConvert(bits, 1);
-					plot.addPlot(x, y, line, polygon);
-					operations.getXValues().add(x);
-					operations.getYValues().add(y);
-					
-					//add data point -> matrix
-					double[][] data = {{x},{y},{1}};
-					equation.addDataPoints(data);
-					
-				}
-				
-				equation.getValues(); //test values
-				
-				operations.showActionListenerDemo();
-				
-	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				frame.pack();             			
-	            frame.setLocationRelativeTo(null);  
-	            frame.setVisible(true);   
 			}
 		}
     }
     
-    public int parseConvert(String[] s , int pos){
-    	return Integer.parseInt(s[s.length - pos]);
+    public double parseConvert(String[] s , int pos){
+    	return Double.parseDouble(s[s.length - pos]);
     }
     
     class CustomActionListener implements ActionListener{

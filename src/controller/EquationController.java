@@ -33,24 +33,30 @@ public class EquationController {
 			System.out.println();
 		}
 		
-		transpose(4, -3);
+		translate(4, -3);
 	}
 	
-	public void transpose(double x, double y){
+	public void translate(double x, double y){
 
 		double[][] trans_point = {{1,0,x},{0,1,y},{0,0,1}};
 		Matrix trans = new Matrix(trans_point);
+		Matrix result;
 		
 		for(int i = 0 ; i < dataPoints.size() ; i++){
 			Matrix matrix = new Matrix(dataPoints.get(i));
-			System.out.println("Original Matrix: "); matrix.printMatrix();
-			System.out.println();
-			System.out.println("Translated Matrix: "); 
-			Matrix result =	trans.multiply(matrix); 
+			
+			System.out.println("Original Matrix: "); 
+				matrix.printMatrix();
+				System.out.println();
+				
+			System.out.println("Translated Matrix: ");
+			result = trans.multiply(matrix); 
+			
 			result.printMatrix();
 			System.out.println();
 		}
 	}
+	
 	
 	public String getType() {
 		return type;
