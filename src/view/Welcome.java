@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -139,7 +138,7 @@ public class Welcome extends JPanel {
   
     }
 
-    private void showActionListenerDemo(){               
+    public void showActionListenerDemo(){               
     	
         btnAdd.addActionListener(new CustomActionListener());        
         btnPoint.addActionListener(new CustomActionListener());
