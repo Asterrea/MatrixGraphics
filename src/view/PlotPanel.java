@@ -153,12 +153,39 @@ class PlotPanel extends JPanel {
         	}
         	
         	if (type.equalsIgnoreCase("PARABOLA")){
+        		boolean isPositive = (equation.getMagnitude() < 0) ? false : true;
+        		
         		if (equation.getOrientation().equalsIgnoreCase("VERTICAL")){
-        			for(int j = 0; j <= 500; j++){
-        				double vertParabola = sqrt(4 * equation.getMagnitude() * (j - y.get(0))) + x.get(0);
-        				int X = (int) vertParabola;
-        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) - X, (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) - X);
-        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) + X, (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) + X);
+        			if (isPositive){
+	        			for(int j = 0; j <= 500; j++){
+	        				double vertParabola = sqrt(4 * equation.getMagnitude() * (j - y.get(0))) + x.get(0);
+	        				int X = (int) vertParabola;
+	        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + X, (int) (offset.y - scale * y.get(0)) - j, (int) (offset.x + x.get(0)*xInc) + X, (int) (offset.y - scale * y.get(0)) - j);
+	        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) - X, (int) (offset.y - scale * y.get(0)) - j, (int) (offset.x + x.get(0)*xInc) - X, (int) (offset.y - scale * y.get(0)) - j);
+	        			}
+        			} else {
+        				for(int j = 0; j <= 500; j++){
+	        				double vertParabola = sqrt(4 * -(equation.getMagnitude()) * (j - y.get(0))) + x.get(0);
+	        				int X = (int) vertParabola;
+	        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) - X, (int) (offset.y - scale * y.get(0)) + j, (int) (offset.x + x.get(0)*xInc) - X, (int) (offset.y - scale * y.get(0)) + j);
+	        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + X, (int) (offset.y - scale * y.get(0)) + j, (int) (offset.x + x.get(0)*xInc) + X, (int) (offset.y - scale * y.get(0)) + j);
+	        			}
+        			}
+        		} else if (equation.getOrientation().equalsIgnoreCase("HORIZONTAL")){
+        			if (isPositive){
+	        			for(int j = 0; j <= 500; j++){
+	        				double vertParabola = sqrt(4 * equation.getMagnitude() * (j - y.get(0))) + x.get(0);
+	        				int X = (int) vertParabola;
+	        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) - X, (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) - X);
+	        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) + X, (int) (offset.x + x.get(0)*xInc) + j, (int) (offset.y - scale * y.get(0)) + X);
+	        			}
+        			} else {
+        				for(int j = 0; j <= 500; j++){
+	        				double vertParabola = sqrt(4 * -(equation.getMagnitude()) * (j - y.get(0))) + x.get(0);
+	        				int X = (int) vertParabola;
+	        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) - j, (int) (offset.y - scale * y.get(0)) + X, (int) (offset.x + x.get(0)*xInc) - j, (int) (offset.y - scale * y.get(0)) + X);
+	        				g2.drawLine( (int) (offset.x + x.get(0)*xInc) - j, (int) (offset.y - scale * y.get(0)) - X, (int) (offset.x + x.get(0)*xInc) - j, (int) (offset.y - scale * y.get(0)) - X);
+	        			}
         			}
         		}
         	}

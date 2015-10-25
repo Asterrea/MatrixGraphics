@@ -181,7 +181,7 @@ public class Welcome extends JPanel {
 				
 	        	Plot2D_test plot = new Plot2D_test();
 	        	OperationBox operations = new OperationBox(); 
-	        	EquationController equation = new EquationController();
+	        	EquationController eq = new EquationController();
 	        	
 				JFrame frame = new JFrame();
 				frame.setSize(1000,700);
@@ -190,18 +190,18 @@ public class Welcome extends JPanel {
 				frame.add(plot.initGraph());
 				frame.add(operations);
 				
-				equation.setType(typeObject);
+				eq.setType(typeObject);
 				
 				try{
 					if(typeObject.equalsIgnoreCase("PARABOLA")){
-						equation.setMagnitude(Double.parseDouble(magTxt.getText()));
+						eq.setMagnitude(Double.parseDouble(magTxt.getText()));
 					}
 					if(typeObject.equalsIgnoreCase("ELLIPSE") || typeObject.equalsIgnoreCase("HYPERBOLA")){
-						equation.setvDistance(Double.parseDouble(vTxt.getText()));
-						equation.sethDistance(Double.parseDouble(hTxt.getText()));
+						eq.setvDistance(Double.parseDouble(vTxt.getText()));
+						eq.sethDistance(Double.parseDouble(hTxt.getText()));
 					}
 					if(typeObject.equalsIgnoreCase("PARABOLA") || typeObject.equalsIgnoreCase("HYPERBOLA")){
-						equation.setOrientation(oBox.getSelectedItem().toString());
+						eq.setOrientation(oBox.getSelectedItem().toString());
 					}
 				
 					// Set the line type base on the type of object
@@ -228,12 +228,12 @@ public class Welcome extends JPanel {
 						
 						//add data point -> matrix
 						double[][] data = {{x},{y},{1}};
-						equation.addDataPoints(data);
+						eq.addDataPoints(data);
 						
 					}
-					plot.setEquation(equation);
+					plot.setEquation(eq);
 					
-					equation.getValues(); //test values
+					eq.getValues(); //test values
 					
 					operations.showActionListenerDemo();
 					
@@ -244,6 +244,17 @@ public class Welcome extends JPanel {
 				} catch(Exception ex){
 					JOptionPane.showMessageDialog(null, "Please input the correct information.");
 				}
+				
+				if(typeObject.equals("PARABOLA") && typeObject.equals("HYPERBOLA")){
+					eq.setOrientation(oBox.getSelectedItem().toString());
+				}
+				
+				operations.showActionListenerDemo();
+				
+	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				frame.pack();             			
+	            frame.setLocationRelativeTo(null);  
+	            frame.setVisible(true);   
 			}
 		}
     }

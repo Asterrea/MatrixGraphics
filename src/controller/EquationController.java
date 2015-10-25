@@ -32,6 +32,7 @@ public class EquationController {
 		rotate_cc(90);
 		scale(5);
 		reflect(1, -1); //reflect in x-axis
+		shearX(40);
 	}
 	
 	//translation
