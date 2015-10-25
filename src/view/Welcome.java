@@ -241,16 +241,10 @@ public class Welcome extends JPanel {
 					frame.pack();             			
 		            frame.setLocationRelativeTo(null);  
 		            frame.setVisible(true);   
+		            
 				} catch(Exception ex){
 					JOptionPane.showMessageDialog(null, "Please input the correct information.");
 				}
-				
-				operations.showActionListenerDemo();
-				
-	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				frame.pack();             			
-	            frame.setLocationRelativeTo(null);  
-	            frame.setVisible(true);   
 			}
 		}
     }
