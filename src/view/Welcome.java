@@ -45,7 +45,7 @@ public class Welcome extends JPanel {
     private JComboBox oBox;
     private JButton btnCreate;
     private JButton btnReset;
-    
+
     ArrayList<Double> x;
     ArrayList<Double> y;
     String typeObject;
@@ -240,11 +240,9 @@ public class Welcome extends JPanel {
 						
 						//add data point -> matrix
 						double[][] data = {{x},{y},{1}};
-						
 						operations.addDataPoints(data);
 					}
 					plot.setEquation(eq);
-					eq.getValues(); //test values
 					
 					operations.showActionListenerDemo();
 		
