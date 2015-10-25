@@ -44,7 +44,7 @@ public class OperationBox extends JPanel{
     public OperationBox() {
     	
         //construct components
-        btnTranspose = new JButton ("Transpose");
+        btnTranspose = new JButton ("Translate");
         btnScale = new JButton ("Scale");
         btnRotate = new JButton ("Rotate");
         btnReflect = new JButton ("Reflect");
