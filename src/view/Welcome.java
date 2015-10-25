@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -172,7 +173,8 @@ public class Welcome extends JPanel {
 			}else {
 				
 	        	Plot2D_test plot = new Plot2D_test();
-	        	OperationBox operations = new OperationBox();
+	        	OperationBox operations = new OperationBox(); 
+	        	EquationController equation = new EquationController();
 	        	
 				JFrame frame = new JFrame();
 				frame.setSize(1000,700);
@@ -180,7 +182,7 @@ public class Welcome extends JPanel {
 				
 				frame.add(plot.initGraph());
 				frame.add(operations);
-				
+
 				//split and convert
 				for(String rowLine : pointBox.getText().split("\\n")){
 					String[] bits = rowLine.split(",");
@@ -189,10 +191,12 @@ public class Welcome extends JPanel {
 					plot.addPlot(x, y);
 					operations.getXValues().add((double) x);
 					operations.getYValues().add((double) y);
+					
+					//add data point -> matrix
+					double[][] data = {{x},{y},{1}};
+					equation.addDataPoints(data);
+					
 				}
-
-				EquationController equation = new EquationController();
-				
 				equation.setType(typeObject);
 				if(!magTxt.getText().isEmpty()){
 					equation.setMagnitude(Double.parseDouble(magTxt.getText()));
