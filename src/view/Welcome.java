@@ -44,6 +44,7 @@ public class Welcome extends JPanel {
     private JLabel orientationLabel;
     private JComboBox oBox;
     private JButton btnCreate;
+    private JButton btnReset;
     
     ArrayList<Double> x;
     ArrayList<Double> y;
@@ -80,6 +81,7 @@ public class Welcome extends JPanel {
         orientationLabel = new JLabel ("ORIENTATION:");
         oBox = new JComboBox (oBoxItems);
         btnCreate = new JButton ("CREATE");
+        btnReset = new JButton("RESET");
 
         //set components properties
         magTxt.setEnabled (false);
@@ -118,6 +120,7 @@ public class Welcome extends JPanel {
         add (orientationLabel);
         add (oBox);
         add (btnCreate);
+        add (btnReset);
 
         //set component bounds (only needed by Absolute Positioning)
         jcomp1.setBounds (240, 25, 175, 30);
@@ -143,7 +146,8 @@ public class Welcome extends JPanel {
         vTxt.setBounds (245, 290, 100, 25);
         orientationLabel.setBounds (145, 320, 100, 25);
         oBox.setBounds (245, 320, 100, 25);
-        btnCreate.setBounds (460, 325, 100, 25);
+        btnCreate.setBounds (400, 325, 100, 25);
+        btnReset.setBounds(520, 325, 100, 25);
   
     }
 
@@ -158,6 +162,7 @@ public class Welcome extends JPanel {
         btnPolygon.addActionListener(new CustomActionListener());
         btnVector.addActionListener(new CustomActionListener());
         btnCreate.addActionListener(new GraphPanelListener());
+        btnReset.addActionListener(new CustomActionListener());
      }
     
     class GraphPanelListener implements ActionListener{
@@ -362,6 +367,10 @@ public class Welcome extends JPanel {
             		JOptionPane.showMessageDialog(null, "Please input the correct coordinates.");
             	}
             	
+            }
+            
+            if(e.getSource().equals(btnReset)){
+            	pointBox.setText(null);
             }
         }
      }	
