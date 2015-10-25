@@ -89,7 +89,8 @@ class PlotPanel extends JPanel {
 	            if(firstTime)
 	                System.out.printf("i = %d  x1 = %6.1f  y1 = %.1f%n", i, x1, y1);
 	            g2.fill(new Ellipse2D.Double(x1-2, y1-2, 4, 4));
-	            g2.drawString(String.valueOf(i), (float)x1+3, (float)y1-3);
+	            String coor = "[" + (x.get(i)) +"," + (y.get(i))+"]";
+	            g2.drawString(coor, (float)x1+3, (float)y1-3);
 	        }
 	        
 	        // Draw Line

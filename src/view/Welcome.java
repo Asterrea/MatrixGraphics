@@ -75,6 +75,7 @@ public class Welcome extends JPanel {
         hTxt.setEnabled (false);
         vTxt.setEnabled (false);
         oBox.setEnabled (false);
+        pointBox.setEnabled(false);
 
         //adjust size and set layout
         setPreferredSize (new Dimension (667, 393));
@@ -154,6 +155,7 @@ public class Welcome extends JPanel {
 			
 			Plot2D_test plot = new Plot2D_test();
 			frame.add(plot.initGraph());
+			plot.addPlot(2, 4);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			frame.pack();             			
@@ -254,7 +256,8 @@ public class Welcome extends JPanel {
             }
             
             if(e.getSource().equals(btnAdd)){
-            	pointBox.append("[" + xTxt.getText()+"," + yTxt.getText() + "]");
+            	pointBox.append(xTxt.getText()+"," + yTxt.getText() + "\n");
+            	
             }
         }
      }	
