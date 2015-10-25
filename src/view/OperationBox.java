@@ -26,6 +26,10 @@ public class OperationBox extends JPanel{
     private JRadioButton rDegree90C;
     private JRadioButton rDegree90CC;
     private JRadioButton rDegree180;
+    private JLabel lblInitial;
+    private JLabel lblTrans;
+    private JTextField inputInitial;
+    private JTextField inputTrans;
 
     public OperationBox() {
         //construct components
@@ -48,9 +52,13 @@ public class OperationBox extends JPanel{
         rDegree90C = new JRadioButton ("90 Degrees (Clockwise)");
         rDegree90CC = new JRadioButton ("90 degrees (Counterclockwise)");
         rDegree180 = new JRadioButton ("180 Degrees");
+        lblInitial = new JLabel("Initial Equation:");
+        inputInitial = new JTextField(1);
+        lblTrans = new JLabel("New Equation:");
+        inputTrans = new JTextField(1);
 
         //adjust size and set layout
-        setPreferredSize (new Dimension (550, 197));
+        setPreferredSize (new Dimension (550, 500));
         setLayout (null);
 
         //add components
@@ -73,12 +81,18 @@ public class OperationBox extends JPanel{
         add (rDegree90C);
         add (rDegree90CC);
         add (rDegree180);
+        add (lblInitial);
+        add (lblTrans);
+        add (inputInitial);
+        add (inputTrans);
         
         btnTranspose.setEnabled(false);
     	btnReflect.setEnabled(true);
     	btnRotate.setEnabled(true);
     	btnShear.setEnabled(true);
     	btnScale.setEnabled(true);
+    	inputInitial.setEnabled(false);
+    	inputTrans.setEnabled(false);
     	
     	lblScalar.hide();
     	inputScalar.hide();
@@ -91,6 +105,10 @@ public class OperationBox extends JPanel{
     	rDegree90C.hide();
     	
         //set component bounds (only needed by Absolute Positioning)
+    	lblInitial.setBounds(10, 250, 85, 25);
+    	lblTrans.setBounds(10, 360, 85, 25);
+    	inputInitial.setBounds(150, 300, 300, 25);
+    	inputTrans.setBounds(150, 400,300, 25);
         btnTranspose.setBounds (5, 10, 100, 25);
         btnScale.setBounds (115, 10, 100, 25);
         btnRotate.setBounds (225, 10, 100, 25);
@@ -132,6 +150,19 @@ public class OperationBox extends JPanel{
 	            	btnRotate.setEnabled(true);
 	            	btnShear.setEnabled(true);
 	            	btnScale.setEnabled(true);
+	            	lblX.show();
+	            	inputX.show();
+	            	inputY.show();
+	            	lblY.show();
+	            	lblScalar.hide();
+	            	inputScalar.hide();
+	            	lblDegree.hide();
+	            	inputDegree.hide();
+	            	rXAxis.hide();
+	            	rYAxis.hide();
+	            	rDegree90CC.hide();
+	            	rDegree180.hide();
+	            	rDegree90C.hide();
 	
 	            }else if(e.getSource().equals(btnScale)){
 	            	btnTranspose.setEnabled(true);
@@ -140,12 +171,41 @@ public class OperationBox extends JPanel{
 	            	btnShear.setEnabled(true);
 	            	btnScale.setEnabled(false);
 	            	
+	            	lblX.hide();
+	            	inputX.hide();
+	            	inputY.hide();
+	            	lblY.hide();
+	            	lblScalar.show();
+	            	inputScalar.show();
+	            	lblDegree.hide();
+	            	inputDegree.hide();
+	            	rXAxis.hide();
+	            	rYAxis.hide();
+	            	rDegree90CC.hide();
+	            	rDegree180.hide();
+	            	rDegree90C.hide();
+	            	
+	            	
 	            }else if(e.getSource().equals(btnRotate)){
 	            	btnTranspose.setEnabled(true);
 	            	btnReflect.setEnabled(true);
 	            	btnRotate.setEnabled(false);
 	            	btnShear.setEnabled(true);
 	            	btnScale.setEnabled(true);
+	            	
+	            	lblX.hide();
+	            	inputX.hide();
+	            	inputY.hide();
+	            	lblY.hide();
+	            	lblScalar.hide();
+	            	inputScalar.hide();
+	            	lblDegree.hide();
+	            	inputDegree.hide();
+	            	rXAxis.hide();
+	            	rYAxis.hide();
+	            	rDegree90CC.show();
+	            	rDegree180.show();
+	            	rDegree90C.show();
 	            	
 	            }else if(e.getSource().equals(btnReflect)){
 	            	btnTranspose.setEnabled(true);
@@ -154,6 +214,20 @@ public class OperationBox extends JPanel{
 	            	btnShear.setEnabled(true);
 	            	btnScale.setEnabled(true);
 	            	
+	            	lblX.hide();
+	            	inputX.hide();
+	            	inputY.hide();
+	            	lblY.hide();
+	            	lblScalar.hide();
+	            	inputScalar.hide();
+	            	lblDegree.hide();
+	            	inputDegree.hide();
+	            	rXAxis.show();
+	            	rYAxis.show();
+	            	rDegree90CC.hide();
+	            	rDegree180.hide();
+	            	rDegree90C.hide();
+	            	
 	            }else if(e.getSource().equals(btnShear)){
 	            	btnTranspose.setEnabled(true);
 	            	btnReflect.setEnabled(true);
@@ -161,15 +235,21 @@ public class OperationBox extends JPanel{
 	            	btnShear.setEnabled(false);
 	            	btnScale.setEnabled(true);
 	            	
+	            	lblX.hide();
+	            	inputX.hide();
+	            	inputY.hide();
+	            	lblY.hide();
+	            	lblScalar.hide();
+	            	inputScalar.hide();
+	            	lblDegree.show();
+	            	inputDegree.show();
+	            	rXAxis.hide();
+	            	rYAxis.hide();
+	            	rDegree90CC.hide();
+	            	rDegree180.hide();
+	            	rDegree90C.hide();
 	            }
 	        }
 	}	
 
-    public static void main (String[] args) {
-        JFrame frame = new JFrame ("");
-        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add (new OperationBox());
-        frame.pack();
-        frame.setVisible (true);
-    }
 }

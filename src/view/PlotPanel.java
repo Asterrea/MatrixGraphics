@@ -30,7 +30,8 @@ class PlotPanel extends JPanel {
  
     public PlotPanel(ArrayList<Double> x, ArrayList<Double> y) {
         setData(x, y);
-        setPreferredSize(new Dimension(900,700));
+        setPreferredSize(new Dimension(700,600));
+        
     }
  
     protected void paintComponent(Graphics g) {
