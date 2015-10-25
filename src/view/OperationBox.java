@@ -1,10 +1,17 @@
 package view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 public class OperationBox extends JPanel{
     private JButton btnTranspose;
@@ -31,7 +38,11 @@ public class OperationBox extends JPanel{
     private JTextField inputInitial;
     private JTextField inputTrans;
 
+    private List<Double> xValues;
+    private List<Double> yValues;
+    
     public OperationBox() {
+    	
         //construct components
         btnTranspose = new JButton ("Transpose");
         btnScale = new JButton ("Scale");
@@ -92,7 +103,9 @@ public class OperationBox extends JPanel{
     	btnShear.setEnabled(true);
     	btnScale.setEnabled(true);
     	inputInitial.setEnabled(false);
+    	inputInitial.setDisabledTextColor(Color.BLACK);
     	inputTrans.setEnabled(false);
+    	inputTrans.setDisabledTextColor(Color.ORANGE);
     	
     	lblScalar.hide();
     	inputScalar.hide();
@@ -128,10 +141,24 @@ public class OperationBox extends JPanel{
         rDegree90C.setBounds (25, 55, 170, 25);
         rDegree90CC.setBounds (25, 90, 215, 35);
         rDegree180.setBounds (25, 130, 100, 25);
+
+        xValues = new ArrayList<Double>();
+        yValues = new ArrayList<Double>();
+    }
+
+    public List<Double> getXValues(){
+    	return xValues;
+    }
+    public List<Double> getYValues(){
+    	return yValues;
     }
 
 	public void showActionListenerDemo(){               
 	    	
+			if(!btnTranspose.isEnabled()){
+	    		inputInitial.setText("P:" + xValues +"," + yValues);
+	    	}
+		
 	        btnReflect.addActionListener(new CustomActionListener());
 	        btnTranspose.addActionListener(new CustomActionListener());
 	        btnRotate.addActionListener(new CustomActionListener());
@@ -143,7 +170,9 @@ public class OperationBox extends JPanel{
 	class CustomActionListener implements ActionListener{
 	    	
 	        public void actionPerformed(ActionEvent e) {
-	        
+	        	
+	        	
+	        	
 	            if(e.getSource().equals(btnTranspose)){
 	            	btnTranspose.setEnabled(false);
 	            	btnReflect.setEnabled(true);
@@ -251,5 +280,4 @@ public class OperationBox extends JPanel{
 	            }
 	        }
 	}	
-
 }

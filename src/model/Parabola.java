@@ -29,7 +29,6 @@ public class Parabola extends JPanel
          int xp = (int)Math.round(200 + x*20);
          int yp = (int)Math.round(200 - y*20); 
          g.fillOval(xp-2,yp-2,5,5); 
-          
        }
     }
 }

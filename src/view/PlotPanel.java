@@ -24,9 +24,9 @@ class PlotPanel extends JPanel {
     double yMax;
     final int PAD = 10;
     final boolean DEBUG = false;
-    boolean line = true; // This is for line mode.
-    boolean polygon = true; // This is for polygon mode. (Line should be set to true)
-    boolean firstTime;  // Set at end of setData method.
+    boolean line = true; 
+    boolean polygon = true; 
+    boolean firstTime; 
  
     public PlotPanel(ArrayList<Double> x, ArrayList<Double> y) {
         setData(x, y);
