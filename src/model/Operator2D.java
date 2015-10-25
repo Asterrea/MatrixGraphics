@@ -71,5 +71,53 @@ public class Operator2D {
 		original.setPoints(temp);
 		
 	}
+	
+	public static void ArbitraryRotation(Vector original, Vector point, double degrees) {
+		Vector temp = Vector.Multiply(point, -1);
+		Operator2D.Translate(original, temp);
+		Operator2D.Rotate(original, degrees);
+		temp.Multiply(1);
+		Operator2D.Translate(original, temp);
+	}
+	
+	public static void ArbitraryRotation(Line original, Vector point, double degrees) {
+		Vector temp = Vector.Multiply(point, -1);
+		Operator2D.Translate(original, temp);
+		Operator2D.Rotate(original, degrees);
+		temp.Multiply(1);
+		Operator2D.Translate(original, temp);
+	}
+	
+	public static void ArbitraryRotation(Shape original, Vector point, double degrees) {
+		Vector temp = Vector.Multiply(point, -1);
+		Operator2D.Translate(original, temp);
+		Operator2D.Rotate(original, degrees);
+		temp.Multiply(1);
+		Operator2D.Translate(original, temp);
+	}
+	
+	public static void ArbitraryScale(Vector original, Vector point, Vector scaling) {
+		Vector temp = Vector.Multiply(point, -1);
+		Operator2D.Translate(original, temp);
+		Operator2D.Scale(original, scaling);
+		temp.Multiply(1);
+		Operator2D.Translate(original, temp);
+	}
+	
+	public static void ArbitraryScale(Line original, Vector point, Vector scaling) {
+		Vector temp = Vector.Multiply(point, -1);
+		Operator2D.Translate(original, temp);
+		Operator2D.Scale(original, scaling);
+		temp.Multiply(1);
+		Operator2D.Translate(original, temp);
+	}
+	
+	public static void ArbitraryScale(Shape original, Vector point, Vector scaling) {
+		Vector temp = Vector.Multiply(point, -1);
+		Operator2D.Translate(original, temp);
+		Operator2D.Scale(original, scaling);
+		temp.Multiply(1);
+		Operator2D.Translate(original, temp);
+	}
 }
 	

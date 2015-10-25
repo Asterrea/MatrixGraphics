@@ -1,11 +1,6 @@
 package model;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.font.*;
-import java.awt.geom.*;
 import java.util.Random;
-import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
  
@@ -39,5 +34,18 @@ public class Plot2D_test {
         y.add(yInput);
         plotPanel.setData(x, y);
         return plotPanel;
+    }
+ 
+    public static void main(String[] args) {
+        Plot2D_test test = new Plot2D_test();
+        JFrame f = new JFrame();
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.add(test.initGraph());
+        
+        test.addPlot(5, 5);
+        test.addPlot(15, 15);
+        f.setSize(400,400);
+        f.setLocation(50,50);
+        f.setVisible(true);
     }
 }
