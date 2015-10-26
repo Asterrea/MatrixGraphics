@@ -93,12 +93,14 @@ final public class Matrix {
     }
 
 	// print matrix
-    public void printMatrix() {
+    public double[][] printMatrix() {
+    	//String s = "";
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) 
                 System.out.printf("%9.2f ", DATA[i][j]);
             System.out.println();
         }
+		return DATA;
     }
     
     public double[][] getDATA() {

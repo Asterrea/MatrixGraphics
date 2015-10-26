@@ -5,15 +5,19 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import model.Matrix;
 import controller.EquationController;
 
 public class OperationBox extends JPanel{
@@ -40,13 +44,17 @@ public class OperationBox extends JPanel{
     private JLabel lblTrans;
     private JTextArea inputInitial;
     private JTextArea inputTrans;
-
+    private JScrollPane scroll;
+    private JScrollPane scroll2;
     private List<Double> xValues;
     private List<Double> yValues;
     private List<double[][]> dataPoints;
+    private List<double[][]> newPoints;
+   
     private String typeObject;
-    
-    public OperationBox() {
+    private Plot2D_test plot;
+
+	public OperationBox() {
     	
         //construct components
         btnTranspose = new JButton ("Translate");
@@ -68,10 +76,12 @@ public class OperationBox extends JPanel{
         rDegree90C = new JRadioButton ("90 Degrees (Clockwise)");
         rDegree90CC = new JRadioButton ("90 degrees (Counterclockwise)");
         rDegree180 = new JRadioButton ("180 Degrees");
-        lblInitial = new JLabel("Initial Equation:");
+        lblInitial = new JLabel("Initial Point Matrix:");
         inputInitial = new JTextArea(5,5);
-        lblTrans = new JLabel("New Equation:");
+        lblTrans = new JLabel("New Point Matrix:");
         inputTrans = new JTextArea(5,5);
+        scroll = new JScrollPane(inputInitial);
+        scroll2 = new JScrollPane(inputTrans);
 
         //adjust size and set layout
         setPreferredSize (new Dimension (550, 500));
@@ -99,8 +109,10 @@ public class OperationBox extends JPanel{
         add (rDegree180);
         add (lblInitial);
         add (lblTrans);
-        add (inputInitial);
-        add (inputTrans);
+//        add (inputInitial); 
+        add (scroll);
+        add(scroll2);
+//        add (inputTrans);
         
         btnTranspose.setEnabled(false);
     	btnReflect.setEnabled(true);
@@ -123,10 +135,12 @@ public class OperationBox extends JPanel{
     	rDegree90C.hide();
     	
         //set component bounds (only needed by Absolute Positioning)
-    	lblInitial.setBounds(10, 250, 85, 25);
-    	lblTrans.setBounds(10, 360, 85, 25);
+    	lblInitial.setBounds(10, 250, 150, 25);
+    	lblTrans.setBounds(10, 360, 150, 25);
     	inputInitial.setBounds(150, 250, 300, 100);
+    	scroll.setBounds(150,250,300,100);
     	inputTrans.setBounds(150, 400,300, 100);
+    	scroll2.setBounds(150, 400, 300, 100);
         btnTranspose.setBounds (5, 10, 100, 25);
         btnScale.setBounds (115, 10, 100, 25);
         btnRotate.setBounds (225, 10, 100, 25);
@@ -150,21 +164,21 @@ public class OperationBox extends JPanel{
         xValues = new ArrayList<Double>();
         yValues = new ArrayList<Double>();
         dataPoints = new ArrayList<double[][]>();
+        newPoints = new ArrayList<double[][]>();
     }
 
-	public void showActionListenerDemo(){               
-	    	
-			if(!btnTranspose.isEnabled()){
-				if(typeObject.equals("POINT"))
-					inputInitial.setText("P " + xValues +"," + yValues);
-				if(typeObject.equals("LINE"))
-					inputInitial.setText("y = mx + b");
-//				if(typeObject.equals("PARABOLA"))
-//				if(typeObject.equals("HYPERBOLA"))
-//				if(typeObject.equals("ELLIPSE"))
-//				if(typeObject.equals("POLYGON"))
-//				if(typeObject.equals("VECTOR"))
-	    	}
+	public void showActionListenerDemo(EquationController eq){     
+			
+			for(int i = 0 ; i < dataPoints.size() ; i++){
+				double data[][] = dataPoints.get(i);
+				 for (int j = 0; j < data.length-1; j++) {
+			            for (int k = 0; k < data[0].length; k++) {
+			            	String point = ""+data[j][k] + "\n";
+			            	inputInitial.append(point); 
+			            }
+				 }
+				 inputInitial.append("\n");
+			}
 		
 	        btnReflect.addActionListener(new CustomActionListener());
 	        btnTranspose.addActionListener(new CustomActionListener());
@@ -176,33 +190,10 @@ public class OperationBox extends JPanel{
 	      
 	}
 	
-	    public List<Double> getXValues(){
-	    	return xValues;
-	    }
-
-		public void setTypeObject(String typeObject) {
-			this.typeObject = typeObject;
-		}
-
-		public List<Double> getYValues(){
-	    	return yValues;
-	    }
-
-		public List<double[][]> getDataPoints() {
-			return dataPoints;
-		}
-
-		public void setDataPoints(List<double[][]> dataPoints) {
-			this.dataPoints = dataPoints;
-		}
-		
-		public void addDataPoints(double[][] dataPoints){
-			this.dataPoints.add(dataPoints);
-		}
 
 	class OperationListener implements ActionListener {
 		public void actionPerformed(ActionEvent e){
-			
+
 			EquationController eq = new EquationController();
 			eq.setDataPoints(dataPoints);
 			
@@ -210,9 +201,12 @@ public class OperationBox extends JPanel{
 			if(e.getSource().equals(btnOK)){
 				if(!btnTranspose.isEnabled()){
 					eq.translate(Double.parseDouble(inputX.getText()),Double.parseDouble(inputY.getText()));
+					callFunction(eq);
 				}else if(!btnScale.isEnabled()){
 					eq.scale(Double.parseDouble((inputScalar.getText())));
+					callFunction(eq);
 				}else if(!btnRotate.isEnabled()){
+//					if(e.getSource().equals(btnRotate)) inputTrans.setText(null);
 					double degreeRotate = 0;
 					if(rDegree90CC.isSelected()){
 						degreeRotate = 90;
@@ -222,25 +216,80 @@ public class OperationBox extends JPanel{
 						degreeRotate = -90;
 					}
 					eq.rotate_cc(degreeRotate);
+					callFunction(eq);
 				}else if(!btnReflect.isEnabled()){
+//					if(e.getSource().equals(btnReflect)) inputTrans.setText(null);
 					double x = 0 ,y = 0;
 					if(rXAxis.isSelected()){
-						x = 1; y = -1;
+						callFunction(eq);
 					}else if(rYAxis.isSelected()){
 						x = -1; y = 1;
 					}
 					eq.reflect(x, y);
+					callFunction(eq);
 				}else if(!btnShear.isEnabled()){
+//					if(e.getSource().equals(btnShear)) inputTrans.setText(null);
 					eq.shearX(Double.parseDouble(inputDegree.getText()));
+					callFunction(eq);
 				}
 			}
 		}
 	}
+	
+	private void plotNewGraph(){
+		boolean line = false, polygon = false;
+		
+		if(typeObject.equalsIgnoreCase("POINT")){
+			line = false;
+			polygon = false;
+		} else if (typeObject.equalsIgnoreCase("LINE") || typeObject.equalsIgnoreCase("PARABOLA") ||
+					typeObject.equalsIgnoreCase("HYPERBOLA") || typeObject.equalsIgnoreCase("VECTOR")){
+			line = true;
+			polygon = false;
+		} else if (typeObject.equalsIgnoreCase("ELLIPSE") || typeObject.equalsIgnoreCase("POLYGON")){
+			line = true;
+			polygon = true;
+		}
+		
+		for(String rowLine : inputTrans.getText().split("\\n")){
+			System.out.println(rowLine);
+			double x = Double.parseDouble(rowLine);
+			double y = Double.parseDouble(rowLine);
+			plot.addPlot(x, y, line, polygon, typeObject);
+			//add data point -> matrix
+			double[][] data = {{x},{y},{1}};
+			dataPoints.add(data);
+		}
+		
+	}
+		
+	public double parseConvert(String[] s , int pos){
+	    	return Double.parseDouble(s[s.length - pos]);
+	}
+	    
+	private void callFunction(EquationController eq){
+		for(int i = 0 ; i < eq.getOriginalMatrixPoints().size() ; i++){
+			double data[][] = eq.getOriginalMatrixPoints().get(i).printMatrix();
+			double newData[][] = eq.getNewMatrixPoints().get(i).printMatrix();
+			 for (int j = 0; j < data.length-1; j++) {
+		            for (int k = 0; k < data[0].length; k++) {
+//		            	String point = ""+data[j][k] + "\n";
+		            	String newPoints = "" + newData[j][k] + "\n";
+//		            	inputInitial.append(point); 
+		            	inputTrans.append(newPoints);
+		            }
+			 }
+//			 inputInitial.append("\n");
+			 inputTrans.append("\n");
+		}
+		plotNewGraph();
+	}
 	class CustomActionListener implements ActionListener{
 	    	
 	        public void actionPerformed(ActionEvent e) {
-	        	
+				
 	            if(e.getSource().equals(btnTranspose)){
+	            	inputTrans.setText(null);
 	            	btnTranspose.setEnabled(false);
 	            	btnReflect.setEnabled(true);
 	            	btnRotate.setEnabled(true);
@@ -261,6 +310,7 @@ public class OperationBox extends JPanel{
 	            	rDegree90C.hide();
 	
 	            }else if(e.getSource().equals(btnScale)){
+	            	inputTrans.setText(null);
 	            	btnTranspose.setEnabled(true);
 	            	btnReflect.setEnabled(true);
 	            	btnRotate.setEnabled(true);
@@ -283,6 +333,7 @@ public class OperationBox extends JPanel{
 	            	
 	            	
 	            }else if(e.getSource().equals(btnRotate)){
+	            	inputTrans.setText(null);
 	            	btnTranspose.setEnabled(true);
 	            	btnReflect.setEnabled(true);
 	            	btnRotate.setEnabled(false);
@@ -304,6 +355,7 @@ public class OperationBox extends JPanel{
 	            	rDegree90C.show();
 	            	
 	            }else if(e.getSource().equals(btnReflect)){
+	            	inputTrans.setText(null);
 	            	btnTranspose.setEnabled(true);
 	            	btnReflect.setEnabled(false);
 	            	btnRotate.setEnabled(true);
@@ -325,6 +377,7 @@ public class OperationBox extends JPanel{
 	            	rDegree90C.hide();
 	            	
 	            }else if(e.getSource().equals(btnShear)){
+	            	inputTrans.setText(null);
 	            	btnTranspose.setEnabled(true);
 	            	btnReflect.setEnabled(true);
 	            	btnRotate.setEnabled(true);
@@ -346,5 +399,35 @@ public class OperationBox extends JPanel{
 	            	rDegree90C.hide();
 	            }
 	        }
-	}	
+		}	
+		public List<Double> getXValues(){
+	    	return xValues;
+	    }
+	
+		public void setTypeObject(String typeObject) {
+			this.typeObject = typeObject;
+		}
+	
+		public List<Double> getYValues(){
+	    	return yValues;
+	    }
+	
+		public List<double[][]> getDataPoints() {
+			return dataPoints;
+		}
+	
+		public void setDataPoints(List<double[][]> dataPoints) {
+			this.dataPoints = dataPoints;
+		}
+		
+		public void addDataPoints(double[][] dataPoints){
+			this.dataPoints.add(dataPoints);
+		}
+		public Plot2D_test getPlot() {
+				return plot;
+		}
+
+		public void setPlot(Plot2D_test plot) {
+				this.plot = plot;
+		}
 }

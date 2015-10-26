@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import model.Matrix;
@@ -17,28 +18,28 @@ public class EquationController {
 	private List<double[][]> transformedPoints;
 	private Matrix original;
 	private Matrix result;
+	private List<Matrix> originalMatrixPoints;
+	private List<Matrix> newMatrixPoints;
 	
 	public EquationController(){
 		dataPoints = new ArrayList<double[][]>();
 		transformedPoints = new ArrayList<double[][]>();
+		originalMatrixPoints = new ArrayList<Matrix>();
+		newMatrixPoints = new ArrayList<Matrix>();
+		
 	}
 
-	public void getValues(){
-		System.out.println(type);
-		System.out.println(magnitude);
-		System.out.println(hDistance);
-		System.out.println(vDistance);
-		System.out.println(orientation);
-		
-		translate(4, -3);
-		rotate_cc(90);
-		scale(5);
-		reflect(1, -1); //reflect in x-axis
-		shearX(40);
+	private void clearList(List<Matrix> list){
+		for(Iterator<Matrix> iter = list.listIterator() ; iter.hasNext(); ){
+			iter.remove();
+		}
 	}
-	
 	//translation
 	public void translate(double x, double y){
+		//clean list
+		clearList(originalMatrixPoints);
+		clearList(newMatrixPoints);
+		
 		System.out.println("TRANSLATING : ");
 		
 		for(int i = 0 ; i < dataPoints.size() ; i++){
@@ -47,16 +48,18 @@ public class EquationController {
 			
 			System.out.println("Original Point Matrix: "); 
 				original.printMatrix();
+				originalMatrixPoints.add(original);
 				System.out.println();
 				
 			System.out.println("Translated Point Matrix: ");
 			Operator2D.Translate(result, x, y);
 			
-			result.printMatrix();
-			System.out.println();
+				result.printMatrix();
+				newMatrixPoints.add(result);
+				System.out.println();
 		}
 	}
-	
+
 	//counter clockwise rotation
 	public void rotate_cc(double degree){
 		System.out.printf("ROTATING CLOCKWISE IN "+ "%.2f " + "DEGREES :", degree);
@@ -238,4 +241,20 @@ public class EquationController {
 		this.orientation = orientation;
 	}
 	
+	
+	public List<Matrix> getOriginalMatrixPoints() {
+		return originalMatrixPoints;
+	}
+
+	public void setOriginalMatrixPoints(List<Matrix> originalMatrixPoints) {
+		this.originalMatrixPoints = originalMatrixPoints;
+	}
+
+	public List<Matrix> getNewMatrixPoints() {
+		return newMatrixPoints;
+	}
+
+	public void setNewMatrixPoints(List<Matrix> newMatrixPoints) {
+		this.newMatrixPoints = newMatrixPoints;
+	}
 }

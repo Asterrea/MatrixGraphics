@@ -169,6 +169,12 @@ public class Welcome extends JPanel {
 
 		public void actionPerformed(ActionEvent e) {
 			
+			int count = 0;
+			
+			for(String rowLine : pointBox.getText().split("\\n")){
+				count++;
+			}
+			
 			if(pointBox.getText().isEmpty()){
 				 JOptionPane.showMessageDialog(null, "Please input Point/s");
 			}else if (typeObject == null){
@@ -177,7 +183,10 @@ public class Welcome extends JPanel {
 				JOptionPane.showMessageDialog(null, "Please input a Magnitude.");
 			}else if (typeObject.equals("HYPERBOLA") && hTxt.getText().isEmpty() && vTxt.getText().isEmpty()){
 				JOptionPane.showMessageDialog(null, "Please input Vertical and Horizontal Distances.");
-			}else {
+			}else if ((count != 1) && (typeObject.equalsIgnoreCase("PARABOLA") || typeObject.equalsIgnoreCase("HYPERBOLA") || 
+					 typeObject.equals("ELLIPSE") || typeObject.equals("VECTOR"))){
+					JOptionPane.showMessageDialog(null, "This type of Object only needs 1 vertex.");
+			}else{
 				
 	        	Plot2D_test plot = new Plot2D_test();
 	        	OperationBox operations = new OperationBox(); 
@@ -186,7 +195,7 @@ public class Welcome extends JPanel {
 				JFrame frame = new JFrame();
 				frame.setSize(1000,700);
 				frame.setLayout(new FlowLayout(FlowLayout.CENTER));
-				
+
 				frame.add(plot.initGraph());
 				frame.add(operations);
 				
@@ -233,20 +242,22 @@ public class Welcome extends JPanel {
 
 					//split and convert
 					for(String rowLine : pointBox.getText().split("\\n")){
+						count++;
 						String[] bits = rowLine.split(",");
 						double x = parseConvert(bits, 2);
 						double y = parseConvert(bits, 1);
 						plot.addPlot(x, y, line, polygon, typeObject);
 						operations.getXValues().add((double) x);
 						operations.getYValues().add((double) y);
-						
+			
 						//add data point -> matrix
 						double[][] data = {{x},{y},{1}};
 						operations.addDataPoints(data); //add points for operation
 					}
-					plot.setEquation(eq);
 					
-					operations.showActionListenerDemo();
+					plot.setEquation(eq);
+					operations.setPlot(plot);
+					operations.showActionListenerDemo(eq);
 		
 		            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					frame.pack();             			
