@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Matrix;
+import model.Operator2D;
 
 public class EquationController {
 	
@@ -14,6 +15,7 @@ public class EquationController {
 	private List<double[][]> dataPoints;
 	private String orientation;
 	private List<double[][]> transformedPoints;
+	private Matrix original;
 	private Matrix result;
 	
 	public EquationController(){
@@ -39,18 +41,16 @@ public class EquationController {
 	public void translate(double x, double y){
 		System.out.println("TRANSLATING : ");
 		
-		double[][] trans_point = {{1,0,x},{0,1,y},{0,0,1}};
-		Matrix trans = new Matrix(trans_point);
-		
 		for(int i = 0 ; i < dataPoints.size() ; i++){
-			Matrix matrix = new Matrix(dataPoints.get(i));
+			original = new Matrix(dataPoints.get(i));
+			result = new Matrix(dataPoints.get(i));
 			
 			System.out.println("Original Point Matrix: "); 
-				matrix.printMatrix();
+				original.printMatrix();
 				System.out.println();
 				
 			System.out.println("Translated Point Matrix: ");
-			result = trans.multiply(matrix); 
+			Operator2D.Translate(result, x, y);
 			
 			result.printMatrix();
 			System.out.println();

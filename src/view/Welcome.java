@@ -20,33 +20,32 @@ import javax.swing.JTextField;
 import controller.EquationController;
 
 public class Welcome extends JPanel {
+    private JLabel jcomp1;
+    private JLabel jcomp2;
+    private JButton btnPoint;
+    private JButton btnLine;
+    private JButton btnEllipse;
+    private JButton btnPolygon;
+    private JButton btnHyperbola;
+    private JButton btnParabola;
+    private JButton btnVector;
+    private JLabel xLabel;
+    private JLabel yLabel;
+    private JTextField xTxt;
+    private JTextField yTxt;
+    private JButton btnAdd;
+    private JTextArea pointBox;
+    private JLabel magLabel;
+    private JTextField magTxt;
+    private JLabel hLabel;
+    private JTextField hTxt;
+    private JLabel vLabel;
+    private JTextField vTxt;
+    private JLabel orientationLabel;
+    private JComboBox oBox;
+    private JButton btnCreate;
+    private JButton btnReset;
 
-     JLabel jcomp1;
-     JLabel jcomp2;
-     JButton btnPoint;
-     JButton btnLine;
-     JButton btnEllipse;
-     JButton btnPolygon;
-     JButton btnHyperbola;
-     JButton btnParabola;
-     JButton btnVector;
-     JLabel xLabel;
-     JLabel yLabel;
-     JTextField xTxt;
-     JTextField yTxt;
-     JButton btnAdd;
-     JTextArea pointBox;
-     JLabel magLabel;
-     JTextField magTxt;
-     JLabel hLabel;
-     JTextField hTxt;
-     JLabel vLabel;
-     JTextField vTxt;
-     JLabel orientationLabel;
-     JComboBox oBox;
-     JButton btnCreate;
-     JButton btnReset;
-    
     ArrayList<Double> x;
     ArrayList<Double> y;
     String typeObject;
@@ -191,6 +190,8 @@ public class Welcome extends JPanel {
 				frame.add(plot.initGraph());
 				frame.add(operations);
 				
+				eq.setType(typeObject);
+				
 				try{
 					
 					eq.setType(typeObject);
@@ -243,24 +244,18 @@ public class Welcome extends JPanel {
 						double[][] data = {{x},{y},{1}};
 						operations.addDataPoints(data); //add points for operation
 					}
-					
 					plot.setEquation(eq);
+					
 					operations.showActionListenerDemo();
 		
 		            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					frame.pack();             			
 		            frame.setLocationRelativeTo(null);  
 		            frame.setVisible(true);   
+		            
 				} catch(Exception ex){
 					JOptionPane.showMessageDialog(null, "Please input the correct information.");
 				}
-
-				operations.showActionListenerDemo();
-				
-	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				frame.pack();             			
-	            frame.setLocationRelativeTo(null);  
-	            frame.setVisible(true);   
 			}
 		}
     }
