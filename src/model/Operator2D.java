@@ -4,63 +4,57 @@ package model;
 
 public class Operator2D {
 	
-	public static void Translate(Object2D original,Vector offset) {
-		Vector[] temp = original.getPoints();
-		for(int i = 0; i < temp.length; i++) {
-			temp[i].Add(offset);
-		}
-		original.setPoints(temp);
+	public static void Translate(Matrix original,double tx, double ty) {
+		double[][] translatePoints = {{1,0,tx},
+									  {0,1,ty},
+									  {0,0,1}};
+		Matrix translateMatrix = new Matrix(translatePoints);
+		original.setDATA(translateMatrix.multiply(original).getDATA());
 	}
 	
-	public static void Rotate(Object2D original,double degrees) {
-		Vector[] temp = original.getPoints();
-		for(int i = 0; i < temp.length; i++) {
-			temp[i].setX((temp[i].getX() * Math.cos(degrees) - (temp[i].getY() * Math.sin(degrees))));
-			temp[i].setY((temp[i].getY() * Math.sin(degrees)) + (temp[i].getX() * Math.cos(degrees)));
-		}
-		original.setPoints(temp);
+	public static void Rotate(Matrix original,double degrees) {
+		double[][] rotatePoints = {{Math.cos(degrees),-Math.sin(degrees),0},
+								   {Math.sin(degrees),Math.cos(degrees),0},
+								   {0,0,1}};
+		Matrix rotateMatrix = new Matrix(rotatePoints);
+		original.setDATA(rotateMatrix.multiply(original).getDATA());
 	}
 	
-	public static void Scale(Object2D original,Vector scaling) {
-		Vector[] temp = original.getPoints();
-		for(int i = 0; i < temp.length; i++) {
-			temp[i].setX(temp[i].getX() * scaling.getX());
-			temp[i].setY(temp[i].getY() * scaling.getY());
-		}
-		original.setPoints(temp);
+	public static void Scale(Matrix original,double sx,double sy) {
+		double[][] scalePoints = {{sx,0,0},
+				   				   {0,sy,0},
+				   				   {0,0,1}};
+		Matrix scaleMatrix = new Matrix(scalePoints);
+		original.setDATA(scaleMatrix.multiply(original).getDATA());
 		
 	}
 	
-	public static void ArbitraryRotation(Object2D original, Vector point, double degrees) {
-		Vector temp = Vector.Multiply(point, -1);
-		Operator2D.Translate(original, temp);
+	public static void ArbitraryRotation(Matrix original, double px, double py, double degrees) {
+		Operator2D.Translate(original, -px, -py);
 		Operator2D.Rotate(original, degrees);
-		temp.Multiply(1);
-		Operator2D.Translate(original, temp);
+		Operator2D.Translate(original, px, py);
 	}
 	
-	public static void ArbitraryScale(Object2D original, Vector point, Vector scaling) {
-		Vector temp = Vector.Multiply(point, -1);
-		Operator2D.Translate(original, temp);
-		Operator2D.Scale(original, scaling);
-		temp.Multiply(1);
-		Operator2D.Translate(original, temp);
+	public static void ArbitraryScale(Matrix original, double px, double py, double sx, double sy) {
+		Operator2D.Translate(original, -px, -py);
+		Operator2D.Scale(original, sx, sy);
+		Operator2D.Translate(original, px, py);
 	}
 	
-	public static void VerticalShear(Object2D original, double offset) {
-		Vector[] temp = original.getPoints();
-		for(int i = 0; i < temp.length; i++) {
-			temp[i].Add(new Vector(temp[i].getY() * offset,0));
-		}
-		original.setPoints(temp);
+	public static void VerticalShear(Matrix original, double g) {
+		double[][] shearPoints = {{1,0,0},
+								  {g,1,0},
+								  {0,0,1}};
+		Matrix shearMatrix = new Matrix(shearPoints);
+		original.setDATA(shearMatrix.multiply(original).getDATA());
 	}
 	
-	public static void HorizontalShear(Object2D original, double offset) {
-		Vector[] temp = original.getPoints();
-		for(int i = 0; i < temp.length; i++) {
-			temp[i].Add(new Vector(0,temp[i].getX() * offset));
-		}
-		original.setPoints(temp);
+	public static void HorizontalShear(Matrix original, double h) {
+		double[][] shearPoints = {{1,h,0},
+				  				  {0,1,0},
+				  				  {0,0,1}};
+		Matrix shearMatrix = new Matrix(shearPoints);
+		original.setDATA(shearMatrix.multiply(original).getDATA());
 	}
 }
 	

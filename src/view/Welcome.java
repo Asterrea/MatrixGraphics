@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import controller.EquationController;
 
 public class Welcome extends JPanel {
+
      JLabel jcomp1;
      JLabel jcomp2;
      JButton btnPoint;
@@ -44,10 +45,13 @@ public class Welcome extends JPanel {
      JLabel orientationLabel;
      JComboBox oBox;
      JButton btnCreate;
+     JButton btnReset;
     
     ArrayList<Double> x;
     ArrayList<Double> y;
     String typeObject;
+    boolean line;
+    boolean polygon;
     
     public Welcome() {
         //construct preComponents
@@ -57,7 +61,7 @@ public class Welcome extends JPanel {
         jcomp1 = new JLabel ("ADVDISC MACHINE PROJECT ");
         jcomp2 = new JLabel ("MATRIX GRAPHICS");
         btnPoint = new JButton ("POINT");
-        btnLine = new JButton ("LINE ");
+        btnLine = new JButton ("LINE");
         btnEllipse = new JButton ("ELLIPSE");
         btnPolygon = new JButton ("POLYGON");
         btnHyperbola = new JButton ("HYPERBOLA");
@@ -78,6 +82,7 @@ public class Welcome extends JPanel {
         orientationLabel = new JLabel ("ORIENTATION:");
         oBox = new JComboBox (oBoxItems);
         btnCreate = new JButton ("CREATE");
+        btnReset = new JButton("RESET");
 
         //set components properties
         magTxt.setEnabled (false);
@@ -116,6 +121,7 @@ public class Welcome extends JPanel {
         add (orientationLabel);
         add (oBox);
         add (btnCreate);
+        add (btnReset);
 
         //set component bounds (only needed by Absolute Positioning)
         jcomp1.setBounds (240, 25, 175, 30);
@@ -141,7 +147,8 @@ public class Welcome extends JPanel {
         vTxt.setBounds (245, 290, 100, 25);
         orientationLabel.setBounds (145, 320, 100, 25);
         oBox.setBounds (245, 320, 100, 25);
-        btnCreate.setBounds (460, 325, 100, 25);
+        btnCreate.setBounds (400, 325, 100, 25);
+        btnReset.setBounds(520, 325, 100, 25);
   
     }
 
@@ -156,6 +163,7 @@ public class Welcome extends JPanel {
         btnPolygon.addActionListener(new CustomActionListener());
         btnVector.addActionListener(new CustomActionListener());
         btnCreate.addActionListener(new GraphPanelListener());
+        btnReset.addActionListener(new CustomActionListener());
      }
     
     class GraphPanelListener implements ActionListener{
@@ -182,32 +190,69 @@ public class Welcome extends JPanel {
 				
 				frame.add(plot.initGraph());
 				frame.add(operations);
-
-				//split and convert
-				for(String rowLine : pointBox.getText().split("\\n")){
-					String[] bits = rowLine.split(",");
-					double x = parseConvert(bits, 2);
-					double y = parseConvert(bits, 1);
-					plot.addPlot(x, y);
-					operations.getXValues().add((double) x);
-					operations.getYValues().add((double) y);
-					
-					//add data point -> matrix
-					double[][] data = {{x},{y},{1}};
-					operations.addDataPoints(data);
-				}
-
-				eq.setType(typeObject);
-				if(!magTxt.getText().isEmpty()){
-					eq.setMagnitude(Double.parseDouble(magTxt.getText()));
-				}else if (!vTxt.getText().isEmpty() && !hTxt.getText().isEmpty()){
-					eq.setvDistance(Double.parseDouble(vTxt.getText()));
-					eq.sethDistance(Double.parseDouble(hTxt.getText()));
-				}
-				if(typeObject.equals("PARABOLA") && typeObject.equals("HYPERBOLA")){
-					eq.setOrientation(oBox.getSelectedItem().toString());
-				}
 				
+				try{
+					
+					eq.setType(typeObject);
+					if(!magTxt.getText().isEmpty()){
+						eq.setMagnitude(Double.parseDouble(magTxt.getText()));
+					}else if (!vTxt.getText().isEmpty() && !hTxt.getText().isEmpty()){
+						eq.setvDistance(Double.parseDouble(vTxt.getText()));
+						eq.sethDistance(Double.parseDouble(hTxt.getText()));	
+					}else if(typeObject.equals("PARABOLA") && typeObject.equals("HYPERBOLA")){
+						eq.setOrientation(oBox.getSelectedItem().toString());
+					}
+		
+					
+					if(typeObject.equalsIgnoreCase("PARABOLA")){
+						eq.setMagnitude(Double.parseDouble(magTxt.getText()));
+					}
+					if(typeObject.equalsIgnoreCase("ELLIPSE") || typeObject.equalsIgnoreCase("HYPERBOLA")){
+						eq.setvDistance(Double.parseDouble(vTxt.getText()));
+						eq.sethDistance(Double.parseDouble(hTxt.getText()));
+					}
+					if(typeObject.equalsIgnoreCase("PARABOLA") || typeObject.equalsIgnoreCase("HYPERBOLA")){
+						eq.setOrientation(oBox.getSelectedItem().toString());
+					}
+				
+					// Set the line type base on the type of object
+					if(typeObject.equalsIgnoreCase("POINT")){
+						line = false;
+						polygon = false;
+					} else if (typeObject.equalsIgnoreCase("LINE") || typeObject.equalsIgnoreCase("PARABOLA") ||
+								typeObject.equalsIgnoreCase("HYPERBOLA") || typeObject.equalsIgnoreCase("VECTOR")){
+						line = true;
+						polygon = false;
+					} else if (typeObject.equalsIgnoreCase("ELLIPSE") || typeObject.equalsIgnoreCase("POLYGON")){
+						line = true;
+						polygon = true;
+					}
+
+					//split and convert
+					for(String rowLine : pointBox.getText().split("\\n")){
+						String[] bits = rowLine.split(",");
+						double x = parseConvert(bits, 2);
+						double y = parseConvert(bits, 1);
+						plot.addPlot(x, y, line, polygon, typeObject);
+						operations.getXValues().add((double) x);
+						operations.getYValues().add((double) y);
+						
+						//add data point -> matrix
+						double[][] data = {{x},{y},{1}};
+						operations.addDataPoints(data);
+					}
+					
+					plot.setEquation(eq);
+					operations.showActionListenerDemo();
+		
+		            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					frame.pack();             			
+		            frame.setLocationRelativeTo(null);  
+		            frame.setVisible(true);   
+				} catch(Exception ex){
+					JOptionPane.showMessageDialog(null, "Please input the correct information.");
+				}
+
 				operations.showActionListenerDemo();
 				
 	            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -326,7 +371,22 @@ public class Welcome extends JPanel {
             }
             
             if(e.getSource().equals(btnAdd)){
-            	pointBox.append(xTxt.getText()+"," + yTxt.getText() + "\n");
+            	double test[] = new double[2];
+            	try{
+            		test[0] = Double.parseDouble(xTxt.getText());
+            		test[1] = Double.parseDouble(yTxt.getText());
+            		
+            		pointBox.append(xTxt.getText()+"," + yTxt.getText() + "\n");
+            		xTxt.setText(null);
+            		yTxt.setText(null);
+            	}catch(Exception ex){
+            		JOptionPane.showMessageDialog(null, "Please input the correct coordinates.");
+            	}
+            	
+            }
+            
+            if(e.getSource().equals(btnReset)){
+            	pointBox.setText(null);
             }
         }
      }	

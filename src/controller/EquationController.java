@@ -105,7 +105,7 @@ public class EquationController {
 	}
 	
 	//reflect (-) y : reflect in x-axis; (-) x : reflect in y-axis
-	public void reflect(int x, int y){
+	public void reflect(double x, double y){
 		System.out.println("Reflect:");
 		double[][] reflect_points =  {{x,0,0}, {0,y,0}, {0,0,1}};
 

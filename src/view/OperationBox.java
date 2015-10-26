@@ -47,7 +47,7 @@ public class OperationBox extends JPanel{
     public OperationBox() {
     	
         //construct components
-        btnTranspose = new JButton ("Transpose");
+        btnTranspose = new JButton ("Translate");
         btnScale = new JButton ("Scale");
         btnRotate = new JButton ("Rotate");
         btnReflect = new JButton ("Reflect");
@@ -189,11 +189,34 @@ public class OperationBox extends JPanel{
 		public void actionPerformed(ActionEvent e){
 			
 			EquationController eq = new EquationController();
-
+			eq.setDataPoints(dataPoints);
+			
+			//DO OPERATIONS
 			if(e.getSource().equals(btnOK)){
 				if(!btnTranspose.isEnabled()){
-					eq.setDataPoints(dataPoints);
 					eq.translate(Double.parseDouble(inputX.getText()),Double.parseDouble(inputY.getText()));
+				}else if(!btnScale.isEnabled()){
+					eq.scale(Double.parseDouble((inputScalar.getText())));
+				}else if(!btnRotate.isEnabled()){
+					double degreeRotate = 0;
+					if(rDegree90CC.isSelected()){
+						degreeRotate = 90;
+					}else if(rDegree180.isSelected()){
+						degreeRotate = 180;
+					}else if(rDegree90C.isSelected()){
+						degreeRotate = -90;
+					}
+					eq.rotate_cc(degreeRotate);
+				}else if(!btnReflect.isEnabled()){
+					double x = 0 ,y = 0;
+					if(rXAxis.isSelected()){
+						x = 1; y = -1;
+					}else if(rYAxis.isSelected()){
+						x = -1; y = 1;
+					}
+					eq.reflect(x, y);
+				}else if(!btnShear.isEnabled()){
+					eq.shearX(Double.parseDouble(inputDegree.getText()));
 				}
 			}
 		}
