@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import controller.EquationController;
@@ -37,12 +38,13 @@ public class OperationBox extends JPanel{
     private JRadioButton rDegree180;
     private JLabel lblInitial;
     private JLabel lblTrans;
-    private JTextField inputInitial;
-    private JTextField inputTrans;
+    private JTextArea inputInitial;
+    private JTextArea inputTrans;
 
     private List<Double> xValues;
     private List<Double> yValues;
     private List<double[][]> dataPoints;
+    private String typeObject;
     
     public OperationBox() {
     	
@@ -67,9 +69,9 @@ public class OperationBox extends JPanel{
         rDegree90CC = new JRadioButton ("90 degrees (Counterclockwise)");
         rDegree180 = new JRadioButton ("180 Degrees");
         lblInitial = new JLabel("Initial Equation:");
-        inputInitial = new JTextField(1);
+        inputInitial = new JTextArea(5,5);
         lblTrans = new JLabel("New Equation:");
-        inputTrans = new JTextField(1);
+        inputTrans = new JTextArea(5,5);
 
         //adjust size and set layout
         setPreferredSize (new Dimension (550, 500));
@@ -123,8 +125,8 @@ public class OperationBox extends JPanel{
         //set component bounds (only needed by Absolute Positioning)
     	lblInitial.setBounds(10, 250, 85, 25);
     	lblTrans.setBounds(10, 360, 85, 25);
-    	inputInitial.setBounds(150, 300, 300, 25);
-    	inputTrans.setBounds(150, 400,300, 25);
+    	inputInitial.setBounds(150, 250, 300, 100);
+    	inputTrans.setBounds(150, 400,300, 100);
         btnTranspose.setBounds (5, 10, 100, 25);
         btnScale.setBounds (115, 10, 100, 25);
         btnRotate.setBounds (225, 10, 100, 25);
@@ -153,7 +155,15 @@ public class OperationBox extends JPanel{
 	public void showActionListenerDemo(){               
 	    	
 			if(!btnTranspose.isEnabled()){
-	    		inputInitial.setText("P " + xValues +"," + yValues);
+				if(typeObject.equals("POINT"))
+					inputInitial.setText("P " + xValues +"," + yValues);
+				if(typeObject.equals("LINE"))
+					inputInitial.setText("y = mx + b");
+//				if(typeObject.equals("PARABOLA"))
+//				if(typeObject.equals("HYPERBOLA"))
+//				if(typeObject.equals("ELLIPSE"))
+//				if(typeObject.equals("POLYGON"))
+//				if(typeObject.equals("VECTOR"))
 	    	}
 		
 	        btnReflect.addActionListener(new CustomActionListener());
@@ -166,10 +176,15 @@ public class OperationBox extends JPanel{
 	      
 	}
 	
-	 public List<Double> getXValues(){
+	    public List<Double> getXValues(){
 	    	return xValues;
 	    }
-	    public List<Double> getYValues(){
+
+		public void setTypeObject(String typeObject) {
+			this.typeObject = typeObject;
+		}
+
+		public List<Double> getYValues(){
 	    	return yValues;
 	    }
 

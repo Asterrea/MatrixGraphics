@@ -194,6 +194,8 @@ public class Welcome extends JPanel {
 				try{
 					
 					eq.setType(typeObject);
+					operations.setTypeObject(typeObject);
+					
 					if(!magTxt.getText().isEmpty()){
 						eq.setMagnitude(Double.parseDouble(magTxt.getText()));
 					}else if (!vTxt.getText().isEmpty() && !hTxt.getText().isEmpty()){
@@ -239,7 +241,7 @@ public class Welcome extends JPanel {
 						
 						//add data point -> matrix
 						double[][] data = {{x},{y},{1}};
-						operations.addDataPoints(data);
+						operations.addDataPoints(data); //add points for operation
 					}
 					
 					plot.setEquation(eq);
