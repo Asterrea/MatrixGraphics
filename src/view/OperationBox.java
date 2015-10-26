@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import controller.EquationController;
+
 public class OperationBox extends JPanel{
     private JButton btnTranspose;
     private JButton btnScale;
@@ -40,6 +42,7 @@ public class OperationBox extends JPanel{
 
     private List<Double> xValues;
     private List<Double> yValues;
+    private List<double[][]> dataPoints;
     
     public OperationBox() {
     	
@@ -144,19 +147,13 @@ public class OperationBox extends JPanel{
 
         xValues = new ArrayList<Double>();
         yValues = new ArrayList<Double>();
-    }
-
-    public List<Double> getXValues(){
-    	return xValues;
-    }
-    public List<Double> getYValues(){
-    	return yValues;
+        dataPoints = new ArrayList<double[][]>();
     }
 
 	public void showActionListenerDemo(){               
 	    	
 			if(!btnTranspose.isEnabled()){
-	    		inputInitial.setText("P:" + xValues +"," + yValues);
+	    		inputInitial.setText("P " + xValues +"," + yValues);
 	    	}
 		
 	        btnReflect.addActionListener(new CustomActionListener());
@@ -164,14 +161,46 @@ public class OperationBox extends JPanel{
 	        btnRotate.addActionListener(new CustomActionListener());
 	        btnScale.addActionListener(new CustomActionListener());
 	        btnShear.addActionListener(new CustomActionListener());
+	        
+	        btnOK.addActionListener(new OperationListener());
 	      
 	}
 	
+	 public List<Double> getXValues(){
+	    	return xValues;
+	    }
+	    public List<Double> getYValues(){
+	    	return yValues;
+	    }
+
+		public List<double[][]> getDataPoints() {
+			return dataPoints;
+		}
+
+		public void setDataPoints(List<double[][]> dataPoints) {
+			this.dataPoints = dataPoints;
+		}
+		
+		public void addDataPoints(double[][] dataPoints){
+			this.dataPoints.add(dataPoints);
+		}
+
+	class OperationListener implements ActionListener {
+		public void actionPerformed(ActionEvent e){
+			
+			EquationController eq = new EquationController();
+
+			if(e.getSource().equals(btnOK)){
+				if(!btnTranspose.isEnabled()){
+					eq.setDataPoints(dataPoints);
+					eq.translate(Double.parseDouble(inputX.getText()),Double.parseDouble(inputY.getText()));
+				}
+			}
+		}
+	}
 	class CustomActionListener implements ActionListener{
 	    	
 	        public void actionPerformed(ActionEvent e) {
-	        	
-	        	
 	        	
 	            if(e.getSource().equals(btnTranspose)){
 	            	btnTranspose.setEnabled(false);

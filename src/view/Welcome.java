@@ -20,30 +20,30 @@ import javax.swing.JTextField;
 import controller.EquationController;
 
 public class Welcome extends JPanel {
-    private JLabel jcomp1;
-    private JLabel jcomp2;
-    private JButton btnPoint;
-    private JButton btnLine;
-    private JButton btnEllipse;
-    private JButton btnPolygon;
-    private JButton btnHyperbola;
-    private JButton btnParabola;
-    private JButton btnVector;
-    private JLabel xLabel;
-    private JLabel yLabel;
-    private JTextField xTxt;
-    private JTextField yTxt;
-    private JButton btnAdd;
-    private JTextArea pointBox;
-    private JLabel magLabel;
-    private JTextField magTxt;
-    private JLabel hLabel;
-    private JTextField hTxt;
-    private JLabel vLabel;
-    private JTextField vTxt;
-    private JLabel orientationLabel;
-    private JComboBox oBox;
-    private JButton btnCreate;
+     JLabel jcomp1;
+     JLabel jcomp2;
+     JButton btnPoint;
+     JButton btnLine;
+     JButton btnEllipse;
+     JButton btnPolygon;
+     JButton btnHyperbola;
+     JButton btnParabola;
+     JButton btnVector;
+     JLabel xLabel;
+     JLabel yLabel;
+     JTextField xTxt;
+     JTextField yTxt;
+     JButton btnAdd;
+     JTextArea pointBox;
+     JLabel magLabel;
+     JTextField magTxt;
+     JLabel hLabel;
+     JTextField hTxt;
+     JLabel vLabel;
+     JTextField vTxt;
+     JLabel orientationLabel;
+     JComboBox oBox;
+     JButton btnCreate;
     
     ArrayList<Double> x;
     ArrayList<Double> y;
@@ -174,7 +174,7 @@ public class Welcome extends JPanel {
 				
 	        	Plot2D_test plot = new Plot2D_test();
 	        	OperationBox operations = new OperationBox(); 
-	        	EquationController equation = new EquationController();
+	        	EquationController eq = new EquationController();
 	        	
 				JFrame frame = new JFrame();
 				frame.setSize(1000,700);
@@ -194,21 +194,19 @@ public class Welcome extends JPanel {
 					
 					//add data point -> matrix
 					double[][] data = {{x},{y},{1}};
-					equation.addDataPoints(data);
-					
+					operations.addDataPoints(data);
 				}
-				equation.setType(typeObject);
+
+				eq.setType(typeObject);
 				if(!magTxt.getText().isEmpty()){
-					equation.setMagnitude(Double.parseDouble(magTxt.getText()));
+					eq.setMagnitude(Double.parseDouble(magTxt.getText()));
 				}else if (!vTxt.getText().isEmpty() && !hTxt.getText().isEmpty()){
-					equation.setvDistance(Double.parseDouble(vTxt.getText()));
-					equation.sethDistance(Double.parseDouble(hTxt.getText()));
+					eq.setvDistance(Double.parseDouble(vTxt.getText()));
+					eq.sethDistance(Double.parseDouble(hTxt.getText()));
 				}
 				if(typeObject.equals("PARABOLA") && typeObject.equals("HYPERBOLA")){
-					equation.setOrientation(oBox.getSelectedItem().toString());
+					eq.setOrientation(oBox.getSelectedItem().toString());
 				}
-				
-				equation.getValues(); //test values
 				
 				operations.showActionListenerDemo();
 				
